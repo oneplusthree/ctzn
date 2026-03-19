@@ -56,28 +56,6 @@ npx serve
 1. Open the app in Chrome, Edge, or Safari
 2. Click "Add to Home Screen" or use browser menu
 
-## Deployment
-
-### GitHub Pages (Automatic)
-
-1. Fork or push this repo to GitHub
-2. Go to **Settings** → **Pages**
-3. Select **Source: Deploy from a branch**
-4. Select **Branch: main / (root)**
-5. Click **Save**
-
-Your app will be live at: `https://YOUR_USERNAME.github.io/REPO_NAME/`
-
-Auto-deploy is set up via GitHub Actions (see `.github/workflows/deploy.yml`).
-
-### Custom Domain
-
-1. Add `CNAME` file with your domain
-2. Configure DNS:
-   - A record: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
-   - CNAME: `www` → `YOUR_USERNAME.github.io`
-3. Enable **Enforce HTTPS** in GitHub Pages settings
-
 ## Project Structure
 
 ```
