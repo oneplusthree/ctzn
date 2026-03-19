@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canadian Citizenship Practice Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 1rem; text-align: center; box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3); }
+    .header h1 { font-size: 1.5rem; cursor: pointer; transition: transform 0.3s; }
+    .header h1:hover { transform: scale(1.02); }
+    .main { flex: 1; max-width: 800px; margin: 0 auto; padding: 1.5rem; width: 100%; }
+    .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.07); opacity: 0; transform: translateY(20px); transition: all 0.3s ease; }
+    .card.visible { opacity: 1; transform: translateY(0); }
+    .card:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .btn { display: inline-block; padding: 0.875rem 1.5rem; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4); }
+    .btn:active { transform: translateY(0); }
+    .btn-secondary { background: white; color: #1e293b; border: 2px solid #e2e8f0; box-shadow: none; }
+    .btn-secondary:hover { border-color: #dc2626; color: #dc2626; background: #fef2f2; }
+    .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; }
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0; }
+    .stat { text-align: center; padding: 1rem; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); opacity: 0; transform: scale(0.9); }
+    .stat.visible { opacity: 1; transform: scale(1); }
+    .stat-value { font-size: 2rem; font-weight: 700; color: #dc2626; }
+    .stat-label { font-size: 0.875rem; color: #64748b; }
+    .question-text { font-size: 1.125rem; font-weight: 500; margin-bottom: 1rem; }
+    .options { display: flex; flex-direction: column; gap: 0.5rem; }
+    .option { padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; opacity: 0; transform: translateX(-20px); }
+    .option.visible { opacity: 1; transform: translateX(0); }
+    .option:hover { border-color: #dc2626; background: #fef2f2; transform: translateX(5px); }
+    .option.selected { border-color: #dc2626; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); }
+    .option.selected:hover { transform: translateX(5px); }
+    .option-letter { font-weight: 600; margin-right: 0.5rem; }
+    .timer { background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 12px; font-weight: 600; backdrop-filter: blur(10px); }
+    .timer.warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    @keyframes confetti { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-500px) rotate(720deg); opacity: 0; } }
+    .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-bottom: 1rem; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #dc2626 0%, #f87171 100%); border-radius: 4px; transition: width 0.5s ease; }
+    .dots { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+    .dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; background: white; }
+    .dot.answered { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); border-color: #dc2626; color: white; }
+    .dot.current { border-width: 3px; border-color: #dc2626; transform: scale(1.1); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2); }
+    .dot:hover { transform: scale(1.15); }
+    .nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
+    .nav .btn { flex: 1; }
+    .results-icon { font-size: 5rem; text-align: center; animation: float 2s ease-in-out infinite; }
+    .results-score { font-size: 4rem; font-weight: 700; text-align: center; color: #dc2626; }
+    .results-title { font-size: 1.5rem; text-align: center; margin-bottom: 0.5rem; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 1000; backdrop-filter: blur(5px); }
+    .modal-content { background: white; border-radius: 20px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; transform: scale(0.9); opacity: 0; transition: all 0.3s ease; }
+    .modal-overlay.show .modal-content { transform: scale(1); opacity: 1; }
+    .modal-header { padding: 1.5rem; text-align: center; border-bottom: 1px solid #e2e8f0; }
+    .modal-header h2 { color: #dc2626; }
+    .modal-body { padding: 1.5rem; }
+    .modal-footer { padding: 1.5rem; border-top: 1px solid #e2e8f0; }
+    .accept-checkbox { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
+    .footer { text-align: center; padding: 1rem; color: #64748b; font-size: 0.75rem; }
+    .hidden { display: none !important; }
+    .history-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; opacity: 0; transform: translateX(-20px); }
+    .history-item.visible { opacity: 1; transform: translateX(0); }
+    .history-item:last-child { border-bottom: none; }
+    .history-date { font-size: 0.875rem; color: #64748b; }
+    .history-score { font-weight: 600; }
+    .history-score.pass { color: #16a34a; }
+    .history-score.fail { color: #dc2626; }
+    .chart-container { margin: 1rem 0; padding: 1.5rem; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 12px; }
+    .chart-bar { display: flex; align-items: flex-end; gap: 8px; height: 120px; padding-top: 20px; }
+    .chart-bar-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; }
+    .chart-bar-fill { width: 100%; background: linear-gradient(180deg, #dc2626 0%, #f87171 100%); border-radius: 6px 6px 0 0; min-height: 4px; transform-origin: bottom; }
+    .chart-bar-label { font-size: 0.625rem; color: #64748b; }
+    .weak-areas { margin-top: 1rem; }
+    .weak-item { display: flex; justify-content: space-between; padding: 0.75rem; border-radius: 8px; margin-bottom: 0.5rem; background: #fef2f2; opacity: 0; transform: translateX(-20px); }
+    .weak-item.visible { opacity: 1; transform: translateX(0); }
+    .weak-name { font-size: 0.875rem; font-weight: 500; }
+    .weak-count { font-size: 0.875rem; font-weight: 600; color: #dc2626; }
+    .confetti-piece { position: fixed; width: 10px; height: 10px; pointer-events: none; z-index: 9999; }
+    .hero-icon { font-size: 4rem; display: block; margin-bottom: 1rem; animation: bounce 2s ease-in-out infinite; }
+    .loading-dots { display: flex; gap: 8px; justify-content: center; }
+    .loading-dot { width: 12px; height: 12px; background: #dc2626; border-radius: 50%; animation: bounce 1s ease-in-out infinite; }
+    .loading-dot:nth-child(2) { animation-delay: 0.1s; }
+    .loading-dot:nth-child(3) { animation-delay: 0.2s; }
+    @media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto;">
+      <h1 onclick="renderHome()">🍁 Citizenship Test</h1>
+      <div id="timer" class="timer hidden">45:00</div>
+    </div>
+  </header>
+
+  <main id="app" class="main"></main>
+
+  <footer class="footer">
+    <strong>Disclaimer:</strong> This is a hobby project. Not affiliated with IRCC or Government of Canada.
+  </footer>
+
+  <div id="disclaimer-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div style="font-size: 4rem;">⚠️</div>
+        <h2>Important Notice</h2>
+      </div>
+      <div class="modal-body">
+        <p><strong>This is a personal hobby project</strong> for educational purposes only.</p>
+        <p>It is <strong>NOT</strong> affiliated with:</p>
+        <ul style="margin-left: 1.5rem; margin: 1rem 0;">
+          <li>Immigration, Refugees and Citizenship Canada (IRCC)</li>
+          <li>The Government of Canada</li>
+          <li>Any government agency</li>
+        </ul>
+        <p>Use at your own discretion. No warranty is provided.</p>
+        <p style="font-size: 0.875rem; color: #64748b; font-style: italic;">Questions based on "Discover Canada" official study guide.</p>
+      </div>
+      <div class="modal-footer">
+        <label class="accept-checkbox">
+          <input type="checkbox" id="disclaimer-checkbox">
+          <span>I understand and accept</span>
+        </label>
+        <button id="disclaimer-continue" class="btn" disabled>Continue</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <script src="js/questions.js"></script>
+  <script>
+    const app = document.getElementById('app');
+    const timerEl = document.getElementById('timer');
+    const modal = document.getElementById('disclaimer-modal');
+    const checkbox = document.getElementById('disclaimer-checkbox');
+    const continueBtn = document.getElementById('disclaimer-continue');
+
+    let state = {
+      session: null,
+      timeRemaining: 45 * 60,
+      timerInterval: null
+    };
+
+    const Data = {
+      KEY_STATS: 'citz_stats',
+      KEY_HISTORY: 'citz_history',
+      KEY_QUESTION_STATS: 'citz_qstats',
+
+      getStats() {
+        return JSON.parse(localStorage.getItem(this.KEY_STATS) || '{"total":0,"best":0,"avg":0,"last10":[]}');
+      },
+
+      saveStats(stats) {
+        localStorage.setItem(this.KEY_STATS, JSON.stringify(stats));
+      },
+
+      getHistory() {
+        return JSON.parse(localStorage.getItem(this.KEY_HISTORY) || '[]');
+      },
+
+      saveHistory(history) {
+        if (history.length > 50) history = history.slice(-50);
+        localStorage.setItem(this.KEY_HISTORY, JSON.stringify(history));
+      },
+
+      getQuestionStats() {
+        return JSON.parse(localStorage.getItem(this.KEY_QUESTION_STATS) || '{}');
+      },
+
+      saveQuestionStats(qstats) {
+        localStorage.setItem(this.KEY_QUESTION_STATS, JSON.stringify(qstats));
+      },
+
+      updateQuestionStats(session) {
+        const qstats = this.getQuestionStats();
+        session.questionIds.forEach(qId => {
+          const q = Questions.get(qId);
+          const answeredCorrectly = session.answers[qId] === q.correctAnswer;
+          if (!qstats[qId]) qstats[qId] = { attempts: 0, correct: 0, lastSeen: null };
+          qstats[qId].attempts++;
+          if (answeredCorrectly) qstats[qId].correct++;
+          qstats[qId].lastSeen = Date.now();
+        });
+        this.saveQuestionStats(qstats);
+      },
+
+      getWeakAreas(count = 5) {
+        const qstats = this.getQuestionStats();
+        const allIds = Object.keys(Questions.getAll());
+        const categoryErrors = {};
+        allIds.forEach(id => {
+          const q = Questions.get(id);
+          const stats = qstats[id] || { attempts: 0, correct: 0 };
+          if (stats.attempts > 0) {
+            const errorRate = 1 - (stats.correct / stats.attempts);
+            if (!categoryErrors[q.category]) categoryErrors[q.category] = { errors: 0, attempts: 0 };
+            categoryErrors[q.category].errors += (1 - (stats.correct / stats.attempts));
+            categoryErrors[q.category].attempts += stats.attempts;
+          }
+        });
+        return Object.entries(categoryErrors)
+          .map(([cat, data]) => ({ category: cat, errorRate: data.attempts > 0 ? Math.round((data.errors / data.attempts) * 100) : 0, attempts: data.attempts }))
+          .sort((a, b) => b.errorRate - a.errorRate)
+          .slice(0, count);
+      }
+    };
+
+    function animateIn(selector, delay = 0) {
+      anime({
+        targets: selector,
+        opacity: [0, 1],
+        translateY: [20, 0],
+        delay: anime.stagger(delay),
+        duration: 500,
+        easing: 'easeOutQuad'
+      });
+    }
+
+    function animateCard(card, delay = 0) {
+      setTimeout(() => {
+        card.classList.add('visible');
+        anime({
+          targets: card,
+          opacity: [0, 1],
+          translateY: [20, 0],
+          duration: 500,
+          easing: 'easeOutQuad'
+        });
+      }, delay);
+    }
+
+    function createConfetti() {
+      const colors = ['#dc2626', '#f87171', '#16a34a', '#fbbf24', '#3b82f6', '#8b5cf6'];
+      for (let i = 0; i < 50; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti-piece';
+        confetti.style.left = Math.random() * 100 + 'vw';
+        confetti.style.top = '100vh';
+        confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        confetti.style.animation = `confetti ${2 + Math.random() * 2}s ease-out forwards`;
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 4000);
+      }
+    }
+
+    if (localStorage.getItem('disclaimer_accepted') === 'true') {
+      modal.classList.add('hidden');
+      init();
+    } else {
+      modal.classList.add('show');
+      anime({ targets: '.modal-content', scale: [0.9, 1], opacity: [0, 1], duration: 400, easing: 'easeOutBack' });
+    }
+
+    checkbox.addEventListener('change', () => { continueBtn.disabled = !checkbox.checked; });
+
+    continueBtn.addEventListener('click', () => {
+      if (checkbox.checked) {
+        localStorage.setItem('disclaimer_accepted', 'true');
+        anime({
+          targets: '.modal-content',
+          scale: [1, 0.9],
+          opacity: [1, 0],
+          duration: 300,
+          easing: 'easeInQuad',
+          complete: () => {
+            modal.classList.remove('show');
+            modal.classList.add('hidden');
+            init();
+          }
+        });
+      }
+    });
+
+    function init() {
+      const saved = localStorage.getItem('current_session');
+      if (saved) {
+        state.session = JSON.parse(saved);
+        if (state.session.status === 'in-progress') {
+          renderTest();
+          return;
+        }
+      }
+      renderHome();
+    }
+
+    function saveState() {
+      localStorage.setItem('current_session', JSON.stringify(state.session));
+    }
+
+    function startTimer() {
+      timerEl.classList.remove('hidden');
+      anime({ targets: timerEl, scale: [0.8, 1], opacity: [0, 1], duration: 300, easing: 'easeOutBack' });
+      if (state.timerInterval) clearInterval(state.timerInterval);
+      state.timerInterval = setInterval(() => {
+        state.timeRemaining--;
+        const m = Math.floor(state.timeRemaining / 60);
+        const s = state.timeRemaining % 60;
+        timerEl.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+        if (state.timeRemaining <= 300 && !timerEl.classList.contains('warning')) {
+          timerEl.classList.add('warning');
+        }
+        if (state.timeRemaining <= 0) submitTest();
+      }, 1000);
+    }
+
+    function stopTimer() {
+      if (state.timerInterval) { clearInterval(state.timerInterval); state.timerInterval = null; }
+      timerEl.classList.add('hidden');
+    }
+
+    function selectQuestions(count = 20) {
+      const qstats = Data.getQuestionStats();
+      const allIds = Object.keys(Questions.getAll());
+      const scored = allIds.map(id => {
+        const stats = qstats[id] || { attempts: 0, correct: 0, lastSeen: null };
+        let score = 50;
+        if (stats.attempts === 0) score = 50;
+        else {
+          const errorRate = 1 - (stats.correct / stats.attempts);
+          score = errorRate * 100;
+          if (errorRate >= 0.5 && stats.attempts <= 3) score += 30;
+          if (stats.lastSeen && Date.now() - stats.lastSeen > 7 * 24 * 60 * 60 * 1000) score += 20;
+        }
+        return { id, score };
+      });
+      scored.sort((a, b) => Math.abs(a.score - b.score) < 5 ? Math.random() - 0.5 : b.score - a.score);
+      const selected = scored.slice(0, count * 2).sort(() => Math.random() - 0.5).slice(0, count);
+      return selected.map(q => q.id);
+    }
+
+    function renderHome() {
+      stopTimer();
+      localStorage.removeItem('current_session');
+      const history = Data.getHistory();
+      const weakAreas = Data.getWeakAreas(3);
+      const recentHistory = history.slice(-10).reverse();
+      const totalTests = history.length;
+      const bestScore = totalTests > 0 ? Math.max(...history.map(h => h.score)) : 0;
+      const avgScore = totalTests > 0 ? Math.round(history.reduce((a, b) => a + b.score, 0) / totalTests) : 0;
+
+      let chartHtml = '';
+      if (recentHistory.length >= 2) {
+        chartHtml = `
+          <div class="chart-container">
+            <h4 style="margin-bottom: 0.5rem;">Last ${recentHistory.length} Tests</h4>
+            <div class="chart-bar">
+              ${recentHistory.map((h, i) => `
+                <div class="chart-bar-item">
+                  <div class="chart-bar-fill" data-height="${(h.score / 100) * 100}" style="height: 0%"></div>
+                  <span class="chart-bar-label">${h.score}%</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      let weakHtml = '';
+      if (weakAreas.length > 0 && weakAreas[0].attempts > 0) {
+        weakHtml = `
+          <div class="weak-areas">
+            <h4 style="margin-bottom: 0.5rem;">Areas to Focus On</h4>
+            ${weakAreas.map(w => `
+              <div class="weak-item">
+                <span class="weak-name">${w.category}</span>
+                <span class="weak-count">${w.errorRate}% errors</span>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      app.innerHTML = `
+        <div class="card">
+          <span class="hero-icon">🍁</span>
+          <h2 style="text-align: center; margin-bottom: 1rem;">Canadian Citizenship Practice Test</h2>
+          <p style="text-align: center; color: #64748b; margin-bottom: 1.5rem;">Based on official Discover Canada study guide</p>
+          <div class="stats">
+            <div class="stat"><div class="stat-value">${totalTests}</div><div class="stat-label">Tests Taken</div></div>
+            <div class="stat"><div class="stat-value">${bestScore}%</div><div class="stat-label">Best Score</div></div>
+            <div class="stat"><div class="stat-value">${avgScore}%</div><div class="stat-label">Average</div></div>
+          </div>
+          <div style="text-align: center;">
+            <button class="btn" onclick="startTest()">Start New Test</button>
+          </div>
+        </div>
+        ${chartHtml}
+        ${weakHtml}
+        ${history.length > 0 ? `
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+              <h3>Recent Tests</h3>
+              <button class="btn btn-secondary btn-small" onclick="renderHistory()">View All</button>
+            </div>
+            ${recentHistory.slice(0, 5).map(h => `
+              <div class="history-item">
+                <div>
+                  <div class="history-date">${new Date(h.date).toLocaleDateString()}</div>
+                </div>
+                <span class="history-score ${h.passed ? 'pass' : 'fail'}">${h.score}%</span>
+              </div>
+            `).join('')}
+          </div>
+        ` : ''}
+        <div class="card" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left: 4px solid #f59e0b;">
+          <h3 style="margin-bottom: 0.5rem;">Test Format</h3>
+          <ul style="margin-left: 1.5rem; color: #92400e;">
+            <li>20 questions (focused on weak areas)</li>
+            <li>45-minute time limit</li>
+            <li>75% to pass (15/20)</li>
+            <li>Incorrect questions shown more often</li>
+          </ul>
+        </div>
+      `;
+
+      anime({ targets: '.hero-icon', scale: [0, 1], rotate: [360, 0], duration: 800, easing: 'easeOutElastic(1, .5)' });
+      anime({ targets: '.stat', opacity: [0, 1], scale: [0.8, 1], delay: anime.stagger(100, {start: 300}), duration: 500, easing: 'easeOutQuad' });
+      anime({ targets: '.btn', opacity: [0, 1], translateY: [20, 0], delay: 600, duration: 500, easing: 'easeOutQuad' });
+      if (chartHtml) setTimeout(() => animeChartBars(), 100);
+      if (weakAreas.length > 0) anime({ targets: '.weak-item', opacity: [0, 1], translateX: [-20, 0], delay: anime.stagger(100), duration: 400, easing: 'easeOutQuad' });
+      anime({ targets: '.history-item', opacity: [0, 1], translateX: [-20, 0], delay: anime.stagger(50), duration: 400, easing: 'easeOutQuad' });
+
+      window.startTest = function() {
+        const testIds = selectQuestions(20);
+        state.session = { id: Date.now().toString(), questionIds: testIds, answers: {}, currentIndex: 0, status: 'in-progress', startTime: Date.now() };
+        state.timeRemaining = 45 * 60;
+        saveState();
+        renderTest();
+        startTimer();
+      };
+    }
+
+    function animateChartBars() {
+      document.querySelectorAll('.chart-bar-fill').forEach(bar => {
+        const height = bar.getAttribute('data-height');
+        anime({ targets: bar, height: [0, height + '%'], duration: 800, easing: 'easeOutQuad' });
+      });
+    }
+
+    function renderHistory() {
+      const history = Data.getHistory().reverse();
+      const totalTests = history.length;
+      const bestScore = totalTests > 0 ? Math.max(...history.map(h => h.score)) : 0;
+      const avgScore = totalTests > 0 ? Math.round(history.reduce((a, b) => a + b.score, 0) / totalTests) : 0;
+      const passRate = totalTests > 0 ? Math.round((history.filter(h => h.passed).length / totalTests) * 100) : 0;
+
+      app.innerHTML = `
+        <div class="card">
+          <button class="btn btn-secondary btn-small" onclick="renderHome()" style="margin-bottom: 1rem;">← Back</button>
+          <h2 style="margin-bottom: 1rem;">Test History</h2>
+          <div class="stats">
+            <div class="stat"><div class="stat-value">${totalTests}</div><div class="stat-label">Total Tests</div></div>
+            <div class="stat"><div class="stat-value">${passRate}%</div><div class="stat-label">Pass Rate</div></div>
+            <div class="stat"><div class="stat-value">${bestScore}%</div><div class="stat-label">Best Score</div></div>
+          </div>
+        </div>
+        ${history.length === 0 ? `<div class="card" style="text-align: center; color: #64748b;"><p>No tests completed yet.</p></div>` : `
+          <div class="card">
+            ${history.map(h => `
+              <div class="history-item">
+                <div>
+                  <div style="font-weight: 500;">${new Date(h.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
+                  <div class="history-date">${h.correct}/${h.total} correct • ${h.timeUsed || '?'} min</div>
+                </div>
+                <div style="text-align: right;">
+                  <span class="history-score ${h.passed ? 'pass' : 'fail'}">${h.score}%</span>
+                  <div style="font-size: 0.75rem; color: #64748b;">${h.passed ? 'Passed' : 'Failed'}</div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `}
+        <div class="card" style="text-align: center;">
+          <button class="btn" onclick="localStorage.removeItem('citz_history'); renderHome()">Clear History</button>
+        </div>
+      `;
+
+      anime({ targets: '.card', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(100), duration: 500, easing: 'easeOutQuad' });
+      anime({ targets: '.history-item', opacity: [0, 1], translateX: [-20, 0], delay: anime.stagger(50), duration: 400, easing: 'easeOutQuad' });
+    }
+
+    function renderTest() {
+      const qId = state.session.questionIds[state.session.currentIndex];
+      const q = Questions.get(qId);
+      const answered = Object.keys(state.session.answers).length;
+      const progress = (answered / state.session.questionIds.length) * 100;
+
+      app.innerHTML = `
+        <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
+        <div class="dots">
+          ${state.session.questionIds.map((id, i) => `
+            <div class="dot ${state.session.answers[id] !== undefined ? 'answered' : ''} ${i === state.session.currentIndex ? 'current' : ''}" onclick="goTo(${i})">${i + 1}</div>
+          `).join('')}
+        </div>
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: #64748b;">
+            <span>Question ${state.session.currentIndex + 1} of ${state.session.questionIds.length}</span>
+            <span>${q.category}</span>
+          </div>
+          <div class="question-text">${q.text}</div>
+          <div class="options">
+            ${q.options.map((opt, i) => `
+              <div class="option ${state.session.answers[qId] === i ? 'selected' : ''}" onclick="selectOption(${i})">
+                <span class="option-letter">${String.fromCharCode(65 + i)}.</span> ${opt}
+              </div>
+            `).join('')}
+          </div>
+        </div>
+        <div class="nav">
+          <button class="btn btn-secondary" onclick="prevQ()" ${state.session.currentIndex === 0 ? 'disabled' : ''}>Previous</button>
+          ${state.session.currentIndex === state.session.questionIds.length - 1 ? '<button class="btn" onclick="submitTest()">Submit Test</button>' : '<button class="btn" onclick="nextQ()">Next</button>'}
+        </div>
+      `;
+
+      anime({ targets: '.card', opacity: [0, 1], translateY: [30, 0], duration: 400, easing: 'easeOutQuad' });
+      anime({ targets: '.option', opacity: [0, 1], translateX: [-20, 0], delay: anime.stagger(80, {start: 200}), duration: 400, easing: 'easeOutQuad' });
+      anime({ targets: '.nav .btn', opacity: [0, 1], scale: [0.9, 1], delay: anime.stagger(100, {start: 400}), duration: 300, easing: 'easeOutQuad' });
+
+      window.selectOption = function(i) {
+        state.session.answers[qId] = i;
+        saveState();
+        anime({ targets: `.option:nth-child(${i + 1})`, scale: [1, 1.02], duration: 150, easing: 'easeOutQuad', complete: () => anime({ targets: `.option:nth-child(${i + 1})`, scale: [1.02, 1], duration: 150, easing: 'easeOutQuad' }) });
+        renderTest();
+      };
+      window.nextQ = function() { if (state.session.currentIndex < 19) { state.session.currentIndex++; renderTest(); } };
+      window.prevQ = function() { if (state.session.currentIndex > 0) { state.session.currentIndex--; renderTest(); } };
+      window.goTo = function(i) { state.session.currentIndex = i; renderTest(); };
+    }
+
+    function submitTest() {
+      if (state.session.submitted) return;
+      state.session.submitted = true;
+      stopTimer();
+      let correct = 0;
+      state.session.questionIds.forEach(qId => {
+        const q = Questions.get(qId);
+        if (state.session.answers[qId] === q.correctAnswer) correct++;
+      });
+      state.session.correct = correct;
+      state.session.status = 'completed';
+      state.session.endTime = Date.now();
+      const score = Math.round((correct / 20) * 100);
+      const passed = score >= 75;
+      const timeUsed = Math.round((45 * 60 - state.timeRemaining) / 60);
+      Data.updateQuestionStats(state.session);
+      const history = Data.getHistory();
+      history.push({ date: Date.now(), score: score, correct: correct, total: 20, passed: passed, timeUsed: timeUsed });
+      Data.saveHistory(history);
+      const totalTests = history.length;
+      const bestScore = Math.max(...history.map(h => h.score));
+      const avgScore = Math.round(history.reduce((a, b) => a + b.score, 0) / totalTests);
+      Data.saveStats({ total: totalTests, best: bestScore, avg: avgScore });
+
+      app.innerHTML = `
+        <div class="card" style="text-align: center;">
+          <div class="results-icon">${passed ? '🎉' : '📚'}</div>
+          <div class="results-title">${passed ? 'Congratulations!' : 'Keep Studying!'}</div>
+          <div class="results-score">${score}%</div>
+          <p style="text-align: center; color: #64748b;">${correct} out of 20 correct<br>${passed ? 'You passed!' : 'Need 75% to pass.'}</p>
+          <div style="text-align: center; margin-top: 1.5rem;">
+            <button class="btn" onclick="renderReview()">Review Answers</button>
+            <button class="btn btn-secondary" onclick="localStorage.removeItem('current_session'); renderHome()">Home</button>
+          </div>
+        </div>
+      `;
+
+      anime({ targets: '.results-icon', scale: [0, 1], rotate: [360, 0], duration: 800, easing: 'easeOutElastic(1, .5)' });
+      anime({ targets: '.results-title', opacity: [0, 1], translateY: [20, 0], delay: 300, duration: 500, easing: 'easeOutQuad' });
+      anime({ targets: '.results-score', opacity: [0, 1], scale: [0.5, 1], delay: 500, duration: 600, easing: 'easeOutBack' });
+      anime({ targets: '.btn', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(200, {start: 800}), duration: 400, easing: 'easeOutQuad' });
+
+      if (passed) setTimeout(createConfetti, 500);
+    }
+
+    function renderReview() {
+      let html = `
+        <div class="card">
+          <button class="btn btn-secondary btn-small" onclick="submitTest()" style="margin-bottom:1rem">← Back to Results</button>
+          <h2>Review Answers</h2>
+        </div>
+      `;
+      state.session.questionIds.forEach((qId, idx) => {
+        const q = Questions.get(qId);
+        const userAns = state.session.answers[qId];
+        const correct = userAns === q.correctAnswer;
+        html += `
+          <div class="card">
+            <div style="color: #64748b; margin-bottom: 0.5rem;">Question ${idx + 1} - ${q.category}</div>
+            <div class="question-text">${q.text}</div>
+            <div class="options">
+              ${q.options.map((opt, i) => `
+                <div class="option ${i === q.correctAnswer ? 'selected' : ''}" style="${i === q.correctAnswer ? 'border-color: #16a34a; background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);' : i === userAns && !correct ? 'border-color: #dc2626; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);' : ''}">
+                  <span class="option-letter">${String.fromCharCode(65 + i)}.</span> ${opt}
+                  ${i === userAns ? '<span style="margin-left: auto; color: #64748b;">Your answer</span>' : ''}
+                  ${i === q.correctAnswer ? '<span style="margin-left: auto; color: #16a34a;">✓ Correct</span>' : ''}
+                </div>
+              `).join('')}
+            </div>
+            <div style="margin-top: 1rem; padding: 1rem; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #3b82f6; border-radius: 4px;">
+              <strong style="color: #1e40af;">Explanation:</strong> ${q.explanation}
+            </div>
+          </div>
+        `;
+      });
+      html += `<div style="text-align: center; margin-top: 1rem;"><button class="btn" onclick="localStorage.removeItem('current_session'); startTest()">Try Again</button><button class="btn btn-secondary" onclick="renderHome()">Home</button></div>`;
+      app.innerHTML = html;
+      anime({ targets: '.card', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(80), duration: 400, easing: 'easeOutQuad' });
+    }
+  </script>
+</body>
+</html>
