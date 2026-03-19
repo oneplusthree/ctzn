@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Canadian Citizenship Practice Test</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); min-height: 100vh; display: flex; flex-direction: column; }
@@ -57,7 +56,8 @@
     .accept-checkbox { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
     .footer { text-align: center; padding: 1rem; color: #64748b; font-size: 0.75rem; }
     .hidden { display: none !important; }
-    .history-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; }
+    .history-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; cursor: pointer; transition: background 0.2s; }
+    .history-item:hover { background: #f8fafc; }
     .history-item:last-child { border-bottom: none; }
     .history-date { font-size: 0.875rem; color: #64748b; }
     .history-score { font-weight: 600; }
@@ -79,6 +79,9 @@
     .fade-in-delay-2 { animation: fadeSlideIn 0.5s ease 0.2s forwards; opacity: 0; }
     .fade-in-delay-3 { animation: fadeSlideIn 0.5s ease 0.3s forwards; opacity: 0; }
     .fade-in-delay-4 { animation: fadeSlideIn 0.5s ease 0.4s forwards; opacity: 0; }
+    .review-btn-group { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    .review-section-title { font-weight: 600; color: #dc2626; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #dc2626; }
+    .history-detail { margin-top: 0.5rem; font-size: 0.875rem; color: #64748b; }
     @media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -215,16 +218,6 @@
         confetti.style.animationDelay = Math.random() * 0.5 + 's';
         document.body.appendChild(confetti);
         setTimeout(() => confetti.remove(), 4000);
-      }
-    }
-
-    function animateFadeIn(selector, delay = 0) {
-      const el = document.querySelector(selector);
-      if (el) {
-        el.style.opacity = '0';
-        setTimeout(() => {
-          anime({ targets: el, opacity: [0, 1], translateY: [20, 0], duration: 400, easing: 'easeOutQuad' });
-        }, delay);
       }
     }
 
@@ -380,10 +373,11 @@
               <h3>Recent Tests</h3>
               <button class="btn btn-secondary btn-small" onclick="renderHistory()">View All</button>
             </div>
-            ${recentHistory.slice(0, 5).map(h => `
-              <div class="history-item">
+            ${recentHistory.slice(0, 5).map((h, idx) => `
+              <div class="history-item" onclick="renderHistoryDetail(${history.length - 1 - idx})">
                 <div>
                   <div class="history-date">${new Date(h.date).toLocaleDateString()}</div>
+                  <div class="history-detail">${h.correct}/${h.total} correct</div>
                 </div>
                 <span class="history-score ${h.passed ? 'pass' : 'fail'}">${h.score}%</span>
               </div>
@@ -396,7 +390,7 @@
             <li>20 questions (focused on weak areas)</li>
             <li>45-minute time limit</li>
             <li>75% to pass (15/20)</li>
-            <li>Incorrect questions shown more often</li>
+            <li>Select answer to move to next question</li>
           </ul>
         </div>
       `;
@@ -443,11 +437,11 @@
         </div>
         ${history.length === 0 ? `<div class="card" style="text-align: center; color: #64748b;"><p>No tests completed yet.</p></div>` : `
           <div class="card">
-            ${history.map(h => `
-              <div class="history-item">
+            ${history.map((h, idx) => `
+              <div class="history-item" onclick="renderHistoryDetail(${history.length - 1 - idx})">
                 <div>
                   <div style="font-weight: 500;">${new Date(h.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
-                  <div class="history-date">${h.correct}/${h.total} correct</div>
+                  <div class="history-detail">${h.correct}/${h.total} correct</div>
                 </div>
                 <div style="text-align: right;">
                   <span class="history-score ${h.passed ? 'pass' : 'fail'}">${h.score}%</span>
@@ -458,11 +452,94 @@
           </div>
         `}
         <div class="card" style="text-align: center;">
-          <button class="btn" onclick="localStorage.removeItem('citz_history'); renderHome()">Clear History</button>
+          <button class="btn" onclick="if(confirm('Clear all history?')) { localStorage.removeItem('citz_history'); localStorage.removeItem('citz_qstats'); renderHome(); }">Clear History</button>
         </div>
       `;
 
       anime({ targets: '.card', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(100), duration: 500, easing: 'easeOutQuad' });
+    }
+
+    function renderHistoryDetail(historyIndex) {
+      const history = Data.getHistory();
+      const test = history[historyIndex];
+      if (!test || !test.questions) {
+        alert('No details available for this test. Older tests may not have saved questions.');
+        return;
+      }
+
+      const incorrect = test.questions.filter(q => q.userAnswer !== q.correctAnswer);
+      const correct = test.questions.filter(q => q.userAnswer === q.correctAnswer);
+
+      let html = `
+        <div class="card">
+          <button class="btn btn-secondary btn-small" onclick="renderHistory()" style="margin-bottom: 1rem;">Back to History</button>
+          <h2 style="margin-bottom: 0.5rem;">Test Details</h2>
+          <p style="color: #64748b;">${new Date(test.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
+          <div class="stats" style="margin-top: 1rem;">
+            <div class="stat"><div class="stat-value">${test.score}%</div><div class="stat-label">Score</div></div>
+            <div class="stat"><div class="stat-value">${test.correct}/${test.total}</div><div class="stat-label">Correct</div></div>
+            <div class="stat"><div class="stat-value">${test.passed ? 'Yes' : 'No'}</div><div class="stat-label">Passed</div></div>
+          </div>
+        </div>
+        
+        <div class="review-btn-group">
+          <button class="btn btn-secondary btn-small" onclick="scrollToSection('incorrect')">Show Incorrect (${incorrect.length})</button>
+          <button class="btn btn-secondary btn-small" onclick="scrollToSection('correct')">Show Correct (${correct.length})</button>
+        </div>
+      `;
+
+      if (incorrect.length > 0) {
+        html += `
+          <div id="incorrect" class="card">
+            <div class="review-section-title">Incorrect Answers (${incorrect.length})</div>
+            ${incorrect.map((q, idx) => `
+              <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0;">
+                <div style="color: #64748b; margin-bottom: 0.5rem;">${q.category}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="option" style="border-color: #dc2626; background: #fef2f2;">
+                  <span class="option-letter">${String.fromCharCode(65 + q.correctAnswer)}.</span> ${q.options[q.correctAnswer]}
+                  <span style="margin-left: auto; color: #16a34a;">Correct</span>
+                </div>
+                <div class="option" style="border-color: #dc2626; background: #fee2e2;">
+                  <span class="option-letter">${String.fromCharCode(65 + q.userAnswer)}.</span> ${q.options[q.userAnswer]}
+                  <span style="margin-left: auto; color: #dc2626;">Your answer</span>
+                </div>
+                <div style="margin-top: 0.75rem; padding: 0.75rem; background: #eff6ff; border-left: 3px solid #3b82f6; font-size: 0.875rem;">
+                  <strong style="color: #1e40af;">Explanation:</strong> ${q.explanation}
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      if (correct.length > 0) {
+        html += `
+          <div id="correct" class="card">
+            <div class="review-section-title" style="color: #16a34a; border-color: #16a34a;">Correct Answers (${correct.length})</div>
+            ${correct.map((q, idx) => `
+              <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0;">
+                <div style="color: #64748b; margin-bottom: 0.5rem;">${q.category}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="option" style="border-color: #16a34a; background: #dcfce7;">
+                  <span class="option-letter">${String.fromCharCode(65 + q.correctAnswer)}.</span> ${q.options[q.correctAnswer]}
+                  <span style="margin-left: auto; color: #16a34a;">Correct</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      app.innerHTML = html;
+      anime({ targets: '.card', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(100), duration: 400, easing: 'easeOutQuad' });
+    }
+
+    function scrollToSection(sectionId) {
+      const el = document.getElementById(sectionId);
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     }
 
     function renderTest() {
@@ -470,6 +547,7 @@
       const q = Questions.get(qId);
       const answered = Object.keys(state.session.answers).length;
       const progress = (answered / state.session.questionIds.length) * 100;
+      const isLast = state.session.currentIndex === state.session.questionIds.length - 1;
 
       app.innerHTML = `
         <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
@@ -494,7 +572,7 @@
         </div>
         <div class="nav">
           <button id="prev-btn" class="btn btn-secondary" onclick="prevQ()" ${state.session.currentIndex === 0 ? 'disabled' : ''}>Previous</button>
-          ${state.session.currentIndex === state.session.questionIds.length - 1 ? '<button id="submit-btn" class="btn" onclick="submitTest()">Submit Test</button>' : '<button id="next-btn" class="btn" onclick="nextQ()">Next</button>'}
+          ${isLast ? '<button id="submit-btn" class="btn" onclick="submitTest()">Submit Test</button>' : '<button id="next-btn" class="btn btn-secondary" onclick="nextQ()">Skip</button>'}
         </div>
       `;
 
@@ -504,8 +582,15 @@
       window.selectOption = function(i) {
         state.session.answers[qId] = i;
         saveState();
-        anime({ targets: `#option-${i}`, scale: [1, 1.02], duration: 150, easing: 'easeOutQuad', complete: () => anime({ targets: `#option-${i}`, scale: [1.02, 1], duration: 150, easing: 'easeOutQuad' }) });
-        renderTest();
+        anime({ targets: `#option-${i}`, scale: [1, 1.05], duration: 150, easing: 'easeOutQuad', complete: () => {
+          anime({ targets: `#option-${i}`, scale: [1.05, 1], duration: 150, easing: 'easeOutQuad', complete: () => {
+            if (state.session.currentIndex < state.session.questionIds.length - 1) {
+              nextQ();
+            } else {
+              submitTest();
+            }
+          }});
+        }});
       };
       window.nextQ = function() { if (state.session.currentIndex < 19) { state.session.currentIndex++; renderTest(); } };
       window.prevQ = function() { if (state.session.currentIndex > 0) { state.session.currentIndex--; renderTest(); } };
@@ -517,10 +602,24 @@
       state.session.submitted = true;
       stopTimer();
       let correct = 0;
+      const questionDetails = [];
+      
       state.session.questionIds.forEach(qId => {
         const q = Questions.get(qId);
-        if (state.session.answers[qId] === q.correctAnswer) correct++;
+        const userAnswer = state.session.answers[qId];
+        const isCorrect = userAnswer === q.correctAnswer;
+        if (isCorrect) correct++;
+        questionDetails.push({
+          id: qId,
+          question: q.text,
+          options: q.options,
+          correctAnswer: q.correctAnswer,
+          userAnswer: userAnswer,
+          category: q.category,
+          explanation: q.explanation
+        });
       });
+      
       state.session.correct = correct;
       state.session.status = 'completed';
       state.session.endTime = Date.now();
@@ -528,9 +627,19 @@
       const passed = score >= 75;
       const timeUsed = Math.round((45 * 60 - state.timeRemaining) / 60);
       Data.updateQuestionStats(state.session);
+      
       const history = Data.getHistory();
-      history.push({ date: Date.now(), score: score, correct: correct, total: 20, passed: passed, timeUsed: timeUsed });
+      history.push({
+        date: Date.now(),
+        score: score,
+        correct: correct,
+        total: 20,
+        passed: passed,
+        timeUsed: timeUsed,
+        questions: questionDetails
+      });
       Data.saveHistory(history);
+      
       const totalTests = history.length;
       const bestScore = Math.max(...history.map(h => h.score));
       const avgScore = Math.round(history.reduce((a, b) => a + b.score, 0) / totalTests);
@@ -558,38 +667,92 @@
     }
 
     function renderReview() {
+      const history = Data.getHistory();
+      const lastTest = history[history.length - 1];
+      
+      if (!lastTest || !lastTest.questions) {
+        alert('No questions saved for this test.');
+        return;
+      }
+
+      const incorrect = lastTest.questions.filter(q => q.userAnswer !== q.correctAnswer);
+      const correct = lastTest.questions.filter(q => q.userAnswer === q.correctAnswer);
+
       let html = `
         <div class="card">
-          <button class="btn btn-secondary btn-small" onclick="submitTest()" style="margin-bottom:1rem">Back to Results</button>
-          <h2>Review Answers</h2>
+          <button class="btn btn-secondary btn-small" onclick="renderHome()" style="margin-bottom: 1rem;">Back</button>
+          <h2 style="margin-bottom: 0.5rem;">Review Answers</h2>
+          <div class="review-btn-group">
+            <button class="btn btn-secondary btn-small" onclick="scrollToSection('incorrect')">Jump to Incorrect (${incorrect.length})</button>
+          </div>
         </div>
       `;
-      state.session.questionIds.forEach((qId, idx) => {
-        const q = Questions.get(qId);
-        const userAns = state.session.answers[qId];
-        const correct = userAns === q.correctAnswer;
+
+      if (incorrect.length > 0) {
         html += `
-          <div class="card">
-            <div style="color: #64748b; margin-bottom: 0.5rem;">Question ${idx + 1} - ${q.category}</div>
-            <div class="question-text">${q.text}</div>
-            <div class="options">
-              ${q.options.map((opt, i) => `
-                <div class="option ${i === q.correctAnswer ? 'selected' : ''}" style="${i === q.correctAnswer ? 'border-color: #16a34a; background: #dcfce7;' : i === userAns && !correct ? 'border-color: #dc2626; background: #fef2f2;' : ''}">
-                  <span class="option-letter">${String.fromCharCode(65 + i)}.</span> ${opt}
-                  ${i === userAns ? '<span style="margin-left: auto; color: #64748b;">Your answer</span>' : ''}
-                  ${i === q.correctAnswer ? '<span style="margin-left: auto; color: #16a34a;">Correct</span>' : ''}
+          <div id="incorrect" class="card">
+            <div class="review-section-title">Incorrect Answers (${incorrect.length})</div>
+            ${incorrect.map((q, idx) => `
+              <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0;">
+                <div style="color: #64748b; margin-bottom: 0.5rem;">${q.category}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="option" style="border-color: #16a34a; background: #dcfce7;">
+                  <span class="option-letter">${String.fromCharCode(65 + q.correctAnswer)}.</span> ${q.options[q.correctAnswer]}
+                  <span style="margin-left: auto; color: #16a34a;">Correct</span>
                 </div>
-              `).join('')}
-            </div>
-            <div style="margin-top: 1rem; padding: 1rem; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
-              <strong style="color: #1e40af;">Explanation:</strong> ${q.explanation}
-            </div>
+                <div class="option" style="border-color: #dc2626; background: #fee2e2;">
+                  <span class="option-letter">${String.fromCharCode(65 + q.userAnswer)}.</span> ${q.options[q.userAnswer]}
+                  <span style="margin-left: auto; color: #dc2626;">Your answer</span>
+                </div>
+                <div style="margin-top: 0.75rem; padding: 0.75rem; background: #eff6ff; border-left: 3px solid #3b82f6; font-size: 0.875rem;">
+                  <strong style="color: #1e40af;">Explanation:</strong> ${q.explanation}
+                </div>
+              </div>
+            `).join('')}
           </div>
         `;
-      });
-      html += `<div style="text-align: center; margin-top: 1rem;"><button class="btn" onclick="localStorage.removeItem('current_session'); startTest()">Try Again</button><button class="btn btn-secondary" onclick="renderHome()">Home</button></div>`;
+      }
+
+      if (correct.length > 0) {
+        html += `
+          <div id="correct" class="card">
+            <div class="review-section-title" style="color: #16a34a; border-color: #16a34a;">Correct Answers (${correct.length})</div>
+            ${correct.map((q, idx) => `
+              <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0;">
+                <div style="color: #64748b; margin-bottom: 0.5rem;">${q.category}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="option" style="border-color: #16a34a; background: #dcfce7;">
+                  <span class="option-letter">${String.fromCharCode(65 + q.correctAnswer)}.</span> ${q.options[q.correctAnswer]}
+                  <span style="margin-left: auto; color: #16a34a;">Correct</span>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      }
+
+      html += `
+        <div class="card" style="text-align: center;">
+          <button class="btn" onclick="localStorage.removeItem('current_session'); startTest()">Try Again</button>
+          <button class="btn btn-secondary" onclick="renderHome()" style="margin-left: 0.5rem;">Home</button>
+        </div>
+      `;
+
       app.innerHTML = html;
-      anime({ targets: '.card', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(80), duration: 400, easing: 'easeOutQuad' });
+      anime({ targets: '.card', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(100), duration: 400, easing: 'easeOutQuad' });
+      
+      if (incorrect.length > 0) {
+        setTimeout(() => scrollToSection('incorrect'), 500);
+      }
+    }
+
+    function startTest() {
+      const testIds = selectQuestions(20);
+      state.session = { id: Date.now().toString(), questionIds: testIds, answers: {}, currentIndex: 0, status: 'in-progress', startTime: Date.now() };
+      state.timeRemaining = 45 * 60;
+      saveState();
+      renderTest();
+      startTimer();
     }
   </script>
 </body>
