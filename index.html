@@ -6,89 +6,77 @@
   <title>Canadian Citizenship Practice Test</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); min-height: 100vh; display: flex; flex-direction: column; }
-    .header { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); color: white; padding: 1rem; text-align: center; box-shadow: 0 4px 20px rgba(220, 38, 38, 0.3); }
-    .header h1 { font-size: 1.5rem; cursor: pointer; transition: transform 0.3s; }
-    .header h1:hover { transform: scale(1.02); }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; min-height: 100vh; display: flex; flex-direction: column; }
+    .header { background: #dc2626; color: white; padding: 1rem; text-align: center; }
+    .header h1 { font-size: 1.5rem; cursor: pointer; }
     .main { flex: 1; max-width: 800px; margin: 0 auto; padding: 1.5rem; width: 100%; }
-    .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.07); }
-    .btn { display: inline-block; padding: 0.875rem 1.5rem; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3); }
-    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4); }
-    .btn:active { transform: translateY(0); }
-    .btn-secondary { background: white; color: #1e293b; border: 2px solid #e2e8f0; box-shadow: none; }
-    .btn-secondary:hover { border-color: #dc2626; color: #dc2626; background: #fef2f2; }
+    .card { background: white; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+    .btn { display: inline-block; padding: 0.875rem 1.5rem; background: #dc2626; color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+    .btn:hover { background: #b91c1c; }
+    .btn:active { transform: scale(0.98); }
+    .btn-secondary { background: white; color: #374151; border: 1px solid #d1d5db; }
+    .btn-secondary:hover { border-color: #dc2626; color: #dc2626; }
     .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; }
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0; }
-    .stat { text-align: center; padding: 1rem; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .stat { text-align: center; padding: 1rem; background: white; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .stat-value { font-size: 2rem; font-weight: 700; color: #dc2626; }
-    .stat-label { font-size: 0.875rem; color: #64748b; }
+    .stat-label { font-size: 0.875rem; color: #6b7280; }
     .question-text { font-size: 1.125rem; font-weight: 500; margin-bottom: 1rem; }
     .options { display: flex; flex-direction: column; gap: 0.5rem; }
-    .option { padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; }
-    .option:hover { border-color: #dc2626; background: #fef2f2; transform: translateX(5px); }
-    .option.selected { border-color: #dc2626; background: #fef2f2; box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); }
+    .option { padding: 1rem; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+    .option:hover { border-color: #dc2626; background: #fef2f2; }
+    .option.selected { border-color: #dc2626; background: #fef2f2; }
     .option-letter { font-weight: 600; margin-right: 0.5rem; }
-    .timer { background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 12px; font-weight: 600; backdrop-filter: blur(10px); }
-    .timer.warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); animation: pulse 1s infinite; }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
-    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-    @keyframes confetti { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-500px) rotate(720deg); opacity: 0; } }
-    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-bottom: 1rem; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, #dc2626 0%, #f87171 100%); border-radius: 4px; transition: width 0.5s ease; }
+    .timer { background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; }
+    .timer.warning { background: #f59e0b; }
+    .progress-bar { height: 6px; background: #e5e7eb; border-radius: 3px; overflow: hidden; margin-bottom: 1rem; }
+    .progress-fill { height: 100%; background: #dc2626; transition: width 0.3s ease; }
     .dots { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
-    .dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; cursor: pointer; transition: all 0.3s ease; background: white; }
-    .dot.answered { background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); border-color: #dc2626; color: white; }
-    .dot.current { border-width: 3px; border-color: #dc2626; transform: scale(1.1); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.2); }
-    .dot:hover { transform: scale(1.15); }
+    .dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #d1d5db; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; background: white; }
+    .dot.answered { background: #dc2626; border-color: #dc2626; color: white; }
+    .dot.current { border-width: 2px; border-color: #dc2626; }
+    .dot:hover { border-color: #dc2626; }
     .nav { display: flex; justify-content: space-between; gap: 1rem; margin-top: 1rem; }
     .nav .btn { flex: 1; }
-    .results-icon { font-size: 5rem; text-align: center; animation: float 2s ease-in-out infinite; }
-    .results-score { font-size: 4rem; font-weight: 700; text-align: center; color: #dc2626; }
+    .results-icon { font-size: 4rem; text-align: center; }
+    .results-score { font-size: 3rem; font-weight: 700; text-align: center; color: #dc2626; }
     .results-title { font-size: 1.5rem; text-align: center; margin-bottom: 0.5rem; }
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 1000; backdrop-filter: blur(5px); }
-    .modal-content { background: white; border-radius: 20px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
-    .modal-header { padding: 1.5rem; text-align: center; border-bottom: 1px solid #e2e8f0; }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 1000; }
+    .modal-content { background: white; border-radius: 12px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
+    .modal-header { padding: 1.5rem; text-align: center; border-bottom: 1px solid #e5e7eb; }
     .modal-header h2 { color: #dc2626; }
     .modal-body { padding: 1.5rem; }
-    .modal-footer { padding: 1.5rem; border-top: 1px solid #e2e8f0; }
+    .modal-footer { padding: 1.5rem; border-top: 1px solid #e5e7eb; }
     .accept-checkbox { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
-    .footer { text-align: center; padding: 1rem; color: #64748b; font-size: 0.75rem; }
+    .footer { text-align: center; padding: 1rem; color: #9ca3af; font-size: 0.75rem; }
     .hidden { display: none !important; }
-    .history-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; cursor: pointer; transition: background 0.2s; }
-    .history-item:hover { background: #f8fafc; }
+    .history-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid #f3f4f6; cursor: pointer; transition: background 0.2s; }
+    .history-item:hover { background: #f9fafb; }
     .history-item:last-child { border-bottom: none; }
-    .history-date { font-size: 0.875rem; color: #64748b; }
+    .history-date { font-size: 0.875rem; color: #6b7280; }
     .history-score { font-weight: 600; }
     .history-score.pass { color: #16a34a; }
     .history-score.fail { color: #dc2626; }
-    .chart-container { margin: 1rem 0; padding: 1.5rem; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 12px; }
-    .chart-bar { display: flex; align-items: flex-end; gap: 8px; height: 120px; padding-top: 20px; }
-    .chart-bar-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; }
-    .chart-bar-fill { width: 100%; background: linear-gradient(180deg, #dc2626 0%, #f87171 100%); border-radius: 6px 6px 0 0; min-height: 4px; }
-    .chart-bar-label { font-size: 0.625rem; color: #64748b; }
+    .chart-container { margin: 1rem 0; padding: 1rem; background: #f9fafb; border-radius: 8px; }
+    .chart-bar { display: flex; align-items: flex-end; gap: 4px; height: 80px; }
+    .chart-bar-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; }
+    .chart-bar-fill { width: 100%; background: #dc2626; border-radius: 3px 3px 0 0; min-height: 4px; }
+    .chart-bar-label { font-size: 0.625rem; color: #9ca3af; }
     .weak-areas { margin-top: 1rem; }
-    .weak-item { display: flex; justify-content: space-between; padding: 0.75rem; border-radius: 8px; margin-bottom: 0.5rem; background: #fef2f2; }
-    .weak-name { font-size: 0.875rem; font-weight: 500; }
+    .weak-item { display: flex; justify-content: space-between; padding: 0.5rem 0.75rem; border-radius: 6px; margin-bottom: 0.5rem; background: #fef2f2; }
+    .weak-name { font-size: 0.875rem; }
     .weak-count { font-size: 0.875rem; font-weight: 600; color: #dc2626; }
-    .confetti-piece { position: fixed; width: 10px; height: 10px; pointer-events: none; z-index: 9999; }
-    .hero-icon { font-size: 4rem; display: block; margin-bottom: 1rem; animation: bounce 2s ease-in-out infinite; }
-    .fade-in { animation: fadeSlideIn 0.5s ease forwards; }
-    .fade-in-delay-1 { animation: fadeSlideIn 0.5s ease 0.1s forwards; opacity: 0; }
-    .fade-in-delay-2 { animation: fadeSlideIn 0.5s ease 0.2s forwards; opacity: 0; }
-    .fade-in-delay-3 { animation: fadeSlideIn 0.5s ease 0.3s forwards; opacity: 0; }
-    .fade-in-delay-4 { animation: fadeSlideIn 0.5s ease 0.4s forwards; opacity: 0; }
+    .confetti-piece { position: fixed; width: 8px; height: 8px; pointer-events: none; z-index: 9999; }
+    .review-section-title { font-weight: 600; color: #dc2626; margin-bottom: 0.75rem; padding-bottom: 0.5rem; border-bottom: 2px solid #dc2626; }
     .review-btn-group { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
-    .review-section-title { font-weight: 600; color: #dc2626; margin-bottom: 0.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid #dc2626; }
-    .history-detail { margin-top: 0.5rem; font-size: 0.875rem; color: #64748b; }
+    .history-detail { font-size: 0.75rem; color: #9ca3af; }
     @media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
   <header class="header">
     <div style="display: flex; justify-content: space-between; align-items: center; max-width: 800px; margin: 0 auto;">
-      <h1 onclick="renderHome()">🍁 Citizenship Test</h1>
+      <h1 onclick="renderHome()">Canadian Citizenship Test</h1>
       <div id="timer" class="timer hidden">45:00</div>
     </div>
   </header>
@@ -102,7 +90,6 @@
   <div id="disclaimer-modal" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <div style="font-size: 4rem;">⚠️</div>
         <h2>Important Notice</h2>
       </div>
       <div class="modal-body">
@@ -114,7 +101,7 @@
           <li>Any government agency</li>
         </ul>
         <p>Use at your own discretion. No warranty is provided.</p>
-        <p style="font-size: 0.875rem; color: #64748b; font-style: italic;">Questions based on "Discover Canada" official study guide.</p>
+        <p style="font-size: 0.875rem; color: #9ca3af; font-style: italic;">Questions based on "Discover Canada" official study guide.</p>
       </div>
       <div class="modal-footer">
         <label class="accept-checkbox">
@@ -147,7 +134,7 @@
       KEY_QUESTION_STATS: 'citz_qstats',
 
       getStats() {
-        return JSON.parse(localStorage.getItem(this.KEY_STATS) || '{"total":0,"best":0,"avg":0,"last10":[]}');
+        return JSON.parse(localStorage.getItem(this.KEY_STATS) || '{"total":0,"best":0,"avg":0}');
       },
 
       saveStats(stats) {
@@ -207,26 +194,26 @@
 
     function createConfetti() {
       const colors = ['#dc2626', '#f87171', '#16a34a', '#fbbf24', '#3b82f6', '#8b5cf6'];
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 30; i++) {
         const confetti = document.createElement('div');
         confetti.className = 'confetti-piece';
         confetti.style.left = Math.random() * 100 + 'vw';
         confetti.style.top = '100vh';
         confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
         confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
-        confetti.style.animation = `confetti ${2 + Math.random() * 2}s ease-out forwards`;
-        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        confetti.style.animation = `confetti ${1.5 + Math.random()}s ease-out forwards`;
         document.body.appendChild(confetti);
-        setTimeout(() => confetti.remove(), 4000);
+        setTimeout(() => confetti.remove(), 3000);
       }
+    }
+
+    function fadeIn(el) {
+      anime({ targets: el, opacity: [0, 1], translateY: [10, 0], duration: 300, easing: 'easeOutQuad' });
     }
 
     if (localStorage.getItem('disclaimer_accepted') === 'true') {
       modal.classList.add('hidden');
       init();
-    } else {
-      modal.style.display = 'flex';
-      anime({ targets: '.modal-content', scale: [0.9, 1], opacity: [0, 1], duration: 400, easing: 'easeOutBack' });
     }
 
     checkbox.addEventListener('change', () => { continueBtn.disabled = !checkbox.checked; });
@@ -234,17 +221,8 @@
     continueBtn.addEventListener('click', () => {
       if (checkbox.checked) {
         localStorage.setItem('disclaimer_accepted', 'true');
-        anime({
-          targets: '.modal-content',
-          scale: [1, 0.9],
-          opacity: [1, 0],
-          duration: 300,
-          easing: 'easeInQuad',
-          complete: () => {
-            modal.style.display = 'none';
-            init();
-          }
-        });
+        modal.classList.add('hidden');
+        init();
       }
     });
 
@@ -266,16 +244,13 @@
 
     function startTimer() {
       timerEl.classList.remove('hidden');
-      anime({ targets: timerEl, scale: [0.8, 1], opacity: [0, 1], duration: 300, easing: 'easeOutBack' });
       if (state.timerInterval) clearInterval(state.timerInterval);
       state.timerInterval = setInterval(() => {
         state.timeRemaining--;
         const m = Math.floor(state.timeRemaining / 60);
         const s = state.timeRemaining % 60;
         timerEl.textContent = `${m}:${s.toString().padStart(2, '0')}`;
-        if (state.timeRemaining <= 300 && !timerEl.classList.contains('warning')) {
-          timerEl.classList.add('warning');
-        }
+        if (state.timeRemaining <= 300) timerEl.classList.add('warning');
         if (state.timeRemaining <= 0) submitTest();
       }, 1000);
     }
@@ -318,17 +293,15 @@
       let chartHtml = '';
       if (recentHistory.length >= 2) {
         chartHtml = `
-          <div id="chart-card" class="card fade-in-delay-2">
-            <div class="chart-container">
-              <h4 style="margin-bottom: 0.5rem;">Last ${recentHistory.length} Tests</h4>
-              <div class="chart-bar">
-                ${recentHistory.map((h, i) => `
-                  <div class="chart-bar-item">
-                    <div class="chart-bar-fill" data-height="${(h.score / 100) * 100}" style="height: 0%"></div>
-                    <span class="chart-bar-label">${h.score}%</span>
-                  </div>
-                `).join('')}
-              </div>
+          <div class="card">
+            <h4 style="margin-bottom: 0.5rem;">Recent Progress</h4>
+            <div class="chart-bar">
+              ${recentHistory.map(h => `
+                <div class="chart-bar-item">
+                  <div class="chart-bar-fill" data-height="${(h.score / 100) * 100}" style="height: 0%"></div>
+                  <span class="chart-bar-label">${h.score}%</span>
+                </div>
+              `).join('')}
             </div>
           </div>
         `;
@@ -337,25 +310,22 @@
       let weakHtml = '';
       if (weakAreas.length > 0 && weakAreas[0].attempts > 0) {
         weakHtml = `
-          <div id="weak-card" class="card fade-in-delay-3">
-            <div class="weak-areas">
-              <h4 style="margin-bottom: 0.5rem;">Areas to Focus On</h4>
-              ${weakAreas.map(w => `
-                <div class="weak-item">
-                  <span class="weak-name">${w.category}</span>
-                  <span class="weak-count">${w.errorRate}% errors</span>
-                </div>
-              `).join('')}
-            </div>
+          <div class="card">
+            <h4 style="margin-bottom: 0.5rem;">Focus Areas</h4>
+            ${weakAreas.map(w => `
+              <div class="weak-item">
+                <span class="weak-name">${w.category}</span>
+                <span class="weak-count">${w.errorRate}% error</span>
+              </div>
+            `).join('')}
           </div>
         `;
       }
 
       app.innerHTML = `
-        <div id="main-card" class="card">
-          <span class="hero-icon">🍁</span>
-          <h2 style="text-align: center; margin-bottom: 1rem;">Canadian Citizenship Practice Test</h2>
-          <p style="text-align: center; color: #64748b; margin-bottom: 1.5rem;">Based on official Discover Canada study guide</p>
+        <div class="card">
+          <h2 style="text-align: center; margin-bottom: 0.5rem;">Canadian Citizenship Practice Test</h2>
+          <p style="text-align: center; color: #6b7280; margin-bottom: 1.5rem;">Based on Discover Canada study guide</p>
           <div class="stats">
             <div class="stat"><div class="stat-value">${totalTests}</div><div class="stat-label">Tests Taken</div></div>
             <div class="stat"><div class="stat-value">${bestScore}%</div><div class="stat-label">Best Score</div></div>
@@ -368,7 +338,7 @@
         ${chartHtml}
         ${weakHtml}
         ${history.length > 0 ? `
-          <div id="recent-card" class="card fade-in-delay-4">
+          <div class="card">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
               <h3>Recent Tests</h3>
               <button class="btn btn-secondary btn-small" onclick="renderHistory()">View All</button>
@@ -384,38 +354,27 @@
             `).join('')}
           </div>
         ` : ''}
-        <div id="info-card" class="card fade-in-delay-4" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left: 4px solid #f59e0b;">
+        <div class="card" style="background: #fffbeb;">
           <h3 style="margin-bottom: 0.5rem;">Test Format</h3>
-          <ul style="margin-left: 1.5rem; color: #92400e;">
-            <li>20 questions (focused on weak areas)</li>
-            <li>45-minute time limit</li>
-            <li>75% to pass (15/20)</li>
-            <li>Select answer to move to next question</li>
+          <ul style="margin-left: 1.5rem; color: #92400e; font-size: 0.9rem;">
+            <li>20 questions</li>
+            <li>45 minutes</li>
+            <li>75% to pass</li>
+            <li>Auto-advances on answer</li>
           </ul>
         </div>
       `;
 
-      anime({ targets: '.hero-icon', scale: [0, 1], rotate: [360, 0], duration: 800, easing: 'easeOutElastic(1, .5)' });
-      anime({ targets: '.stat', opacity: [0, 1], scale: [0.8, 1], delay: anime.stagger(100, {start: 300}), duration: 500, easing: 'easeOutQuad' });
-      anime({ targets: '#start-btn', opacity: [0, 1], translateY: [20, 0], delay: 600, duration: 500, easing: 'easeOutQuad' });
+      fadeIn('.card');
 
       setTimeout(() => {
         document.querySelectorAll('.chart-bar-fill').forEach(bar => {
           const height = bar.getAttribute('data-height');
-          anime({ targets: bar, height: [0, height + '%'], duration: 800, easing: 'easeOutQuad' });
+          anime({ targets: bar, height: [0, height + '%'], duration: 600, easing: 'easeOutQuad' });
         });
-      }, 300);
+      }, 100);
 
-      window.startTest = function() {
-        const testIds = selectQuestions(20);
-        state.session = { id: Date.now().toString(), questionIds: testIds, answers: {}, currentIndex: 0, status: 'in-progress', startTime: Date.now() };
-        state.timeRemaining = 45 * 60;
-        saveState();
-        renderTest();
-        startTimer();
-      };
-
-      document.getElementById('start-btn').addEventListener('click', window.startTest);
+      document.getElementById('start-btn').addEventListener('click', startTest);
     }
 
     function renderHistory() {
@@ -435,7 +394,7 @@
             <div class="stat"><div class="stat-value">${bestScore}%</div><div class="stat-label">Best Score</div></div>
           </div>
         </div>
-        ${history.length === 0 ? `<div class="card" style="text-align: center; color: #64748b;"><p>No tests completed yet.</p></div>` : `
+        ${history.length === 0 ? `<div class="card" style="text-align: center; color: #9ca3af;"><p>No tests completed yet.</p></div>` : `
           <div class="card">
             ${history.map((h, idx) => `
               <div class="history-item" onclick="renderHistoryDetail(${history.length - 1 - idx})">
@@ -445,25 +404,25 @@
                 </div>
                 <div style="text-align: right;">
                   <span class="history-score ${h.passed ? 'pass' : 'fail'}">${h.score}%</span>
-                  <div style="font-size: 0.75rem; color: #64748b;">${h.passed ? 'Passed' : 'Failed'}</div>
+                  <div style="font-size: 0.75rem; color: #9ca3af;">${h.passed ? 'Passed' : 'Failed'}</div>
                 </div>
               </div>
             `).join('')}
           </div>
         `}
         <div class="card" style="text-align: center;">
-          <button class="btn" onclick="if(confirm('Clear all history?')) { localStorage.removeItem('citz_history'); localStorage.removeItem('citz_qstats'); renderHome(); }">Clear History</button>
+          <button class="btn btn-secondary" onclick="if(confirm('Clear all history?')) { localStorage.removeItem('citz_history'); localStorage.removeItem('citz_qstats'); renderHome(); }">Clear History</button>
         </div>
       `;
 
-      anime({ targets: '.card', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(100), duration: 500, easing: 'easeOutQuad' });
+      fadeIn('.card');
     }
 
     function renderHistoryDetail(historyIndex) {
       const history = Data.getHistory();
       const test = history[historyIndex];
       if (!test || !test.questions) {
-        alert('No details available for this test. Older tests may not have saved questions.');
+        alert('No details available for this test.');
         return;
       }
 
@@ -472,9 +431,9 @@
 
       let html = `
         <div class="card">
-          <button class="btn btn-secondary btn-small" onclick="renderHistory()" style="margin-bottom: 1rem;">Back to History</button>
+          <button class="btn btn-secondary btn-small" onclick="renderHistory()" style="margin-bottom: 1rem;">Back</button>
           <h2 style="margin-bottom: 0.5rem;">Test Details</h2>
-          <p style="color: #64748b;">${new Date(test.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
+          <p style="color: #9ca3af;">${new Date(test.date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p>
           <div class="stats" style="margin-top: 1rem;">
             <div class="stat"><div class="stat-value">${test.score}%</div><div class="stat-label">Score</div></div>
             <div class="stat"><div class="stat-value">${test.correct}/${test.total}</div><div class="stat-label">Correct</div></div>
@@ -483,29 +442,29 @@
         </div>
         
         <div class="review-btn-group">
-          <button class="btn btn-secondary btn-small" onclick="scrollToSection('incorrect')">Show Incorrect (${incorrect.length})</button>
-          <button class="btn btn-secondary btn-small" onclick="scrollToSection('correct')">Show Correct (${correct.length})</button>
+          ${incorrect.length > 0 ? `<button class="btn btn-secondary btn-small" onclick="scrollTo('incorrect')">Incorrect (${incorrect.length})</button>` : ''}
+          ${correct.length > 0 ? `<button class="btn btn-secondary btn-small" onclick="scrollTo('correct')">Correct (${correct.length})</button>` : ''}
         </div>
       `;
 
       if (incorrect.length > 0) {
         html += `
           <div id="incorrect" class="card">
-            <div class="review-section-title">Incorrect Answers (${incorrect.length})</div>
-            ${incorrect.map((q, idx) => `
-              <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0;">
-                <div style="color: #64748b; margin-bottom: 0.5rem;">${q.category}</div>
+            <div class="review-section-title">Incorrect (${incorrect.length})</div>
+            ${incorrect.map(q => `
+              <div style="margin-bottom: 1.5rem;">
+                <div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.5rem;">${q.category}</div>
                 <div class="question-text">${q.question}</div>
-                <div class="option" style="border-color: #dc2626; background: #fef2f2;">
+                <div class="option" style="border-color: #16a34a; background: #dcfce7;">
                   <span class="option-letter">${String.fromCharCode(65 + q.correctAnswer)}.</span> ${q.options[q.correctAnswer]}
                   <span style="margin-left: auto; color: #16a34a;">Correct</span>
                 </div>
-                <div class="option" style="border-color: #dc2626; background: #fee2e2;">
+                <div class="option" style="border-color: #dc2626; background: #fef2f2;">
                   <span class="option-letter">${String.fromCharCode(65 + q.userAnswer)}.</span> ${q.options[q.userAnswer]}
                   <span style="margin-left: auto; color: #dc2626;">Your answer</span>
                 </div>
-                <div style="margin-top: 0.75rem; padding: 0.75rem; background: #eff6ff; border-left: 3px solid #3b82f6; font-size: 0.875rem;">
-                  <strong style="color: #1e40af;">Explanation:</strong> ${q.explanation}
+                <div style="margin-top: 0.75rem; padding: 0.75rem; background: #eff6ff; border-left: 3px solid #3b82f6; font-size: 0.875rem; color: #1e40af;">
+                  ${q.explanation}
                 </div>
               </div>
             `).join('')}
@@ -516,10 +475,10 @@
       if (correct.length > 0) {
         html += `
           <div id="correct" class="card">
-            <div class="review-section-title" style="color: #16a34a; border-color: #16a34a;">Correct Answers (${correct.length})</div>
-            ${correct.map((q, idx) => `
-              <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0;">
-                <div style="color: #64748b; margin-bottom: 0.5rem;">${q.category}</div>
+            <div class="review-section-title" style="color: #16a34a; border-color: #16a34a;">Correct (${correct.length})</div>
+            ${correct.map(q => `
+              <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f3f4f6;">
+                <div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.5rem;">${q.category}</div>
                 <div class="question-text">${q.question}</div>
                 <div class="option" style="border-color: #16a34a; background: #dcfce7;">
                   <span class="option-letter">${String.fromCharCode(65 + q.correctAnswer)}.</span> ${q.options[q.correctAnswer]}
@@ -532,14 +491,11 @@
       }
 
       app.innerHTML = html;
-      anime({ targets: '.card', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(100), duration: 400, easing: 'easeOutQuad' });
+      fadeIn('.card');
     }
 
-    function scrollToSection(sectionId) {
-      const el = document.getElementById(sectionId);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+    function scrollTo(id) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function renderTest() {
@@ -547,7 +503,6 @@
       const q = Questions.get(qId);
       const answered = Object.keys(state.session.answers).length;
       const progress = (answered / state.session.questionIds.length) * 100;
-      const isLast = state.session.currentIndex === state.session.questionIds.length - 1;
 
       app.innerHTML = `
         <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
@@ -557,7 +512,7 @@
           `).join('')}
         </div>
         <div class="card">
-          <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: #64748b;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 1rem; color: #9ca3af; font-size: 0.875rem;">
             <span>Question ${state.session.currentIndex + 1} of ${state.session.questionIds.length}</span>
             <span>${q.category}</span>
           </div>
@@ -571,31 +526,29 @@
           </div>
         </div>
         <div class="nav">
-          <button id="prev-btn" class="btn btn-secondary" onclick="prevQ()" ${state.session.currentIndex === 0 ? 'disabled' : ''}>Previous</button>
-          ${isLast ? '<button id="submit-btn" class="btn" onclick="submitTest()">Submit Test</button>' : '<button id="next-btn" class="btn btn-secondary" onclick="nextQ()">Skip</button>'}
+          <button class="btn btn-secondary" onclick="prevQ()" ${state.session.currentIndex === 0 ? 'disabled' : ''}>Previous</button>
+          ${state.session.currentIndex === state.session.questionIds.length - 1 ? '<button class="btn" onclick="submitTest()">Submit</button>' : '<button class="btn btn-secondary" onclick="nextQ()">Skip</button>'}
         </div>
       `;
-
-      anime({ targets: '.card', opacity: [0, 1], translateY: [30, 0], duration: 400, easing: 'easeOutQuad' });
-      anime({ targets: '.option', opacity: [0, 1], translateX: [-20, 0], delay: anime.stagger(80, {start: 200}), duration: 400, easing: 'easeOutQuad' });
-
-      window.selectOption = function(i) {
-        state.session.answers[qId] = i;
-        saveState();
-        anime({ targets: `#option-${i}`, scale: [1, 1.05], duration: 150, easing: 'easeOutQuad', complete: () => {
-          anime({ targets: `#option-${i}`, scale: [1.05, 1], duration: 150, easing: 'easeOutQuad', complete: () => {
-            if (state.session.currentIndex < state.session.questionIds.length - 1) {
-              nextQ();
-            } else {
-              submitTest();
-            }
-          }});
-        }});
-      };
-      window.nextQ = function() { if (state.session.currentIndex < 19) { state.session.currentIndex++; renderTest(); } };
-      window.prevQ = function() { if (state.session.currentIndex > 0) { state.session.currentIndex--; renderTest(); } };
-      window.goTo = function(i) { state.session.currentIndex = i; renderTest(); };
     }
+
+    function selectOption(i) {
+      const qId = state.session.questionIds[state.session.currentIndex];
+      state.session.answers[qId] = i;
+      saveState();
+      
+      anime({ targets: `#option-${i}`, scale: [1, 1.02], duration: 100, easing: 'easeOutQuad', complete: () => {
+        if (state.session.currentIndex < state.session.questionIds.length - 1) {
+          nextQ();
+        } else {
+          submitTest();
+        }
+      }});
+    }
+
+    function nextQ() { if (state.session.currentIndex < 19) { state.session.currentIndex++; renderTest(); } }
+    function prevQ() { if (state.session.currentIndex > 0) { state.session.currentIndex--; renderTest(); } }
+    function goTo(i) { state.session.currentIndex = i; renderTest(); }
 
     function submitTest() {
       if (state.session.submitted) return;
@@ -607,37 +560,23 @@
       state.session.questionIds.forEach(qId => {
         const q = Questions.get(qId);
         const userAnswer = state.session.answers[qId];
-        const isCorrect = userAnswer === q.correctAnswer;
-        if (isCorrect) correct++;
+        if (userAnswer === q.correctAnswer) correct++;
         questionDetails.push({
-          id: qId,
-          question: q.text,
-          options: q.options,
-          correctAnswer: q.correctAnswer,
-          userAnswer: userAnswer,
-          category: q.category,
-          explanation: q.explanation
+          id: qId, question: q.text, options: q.options,
+          correctAnswer: q.correctAnswer, userAnswer: userAnswer,
+          category: q.category, explanation: q.explanation
         });
       });
       
       state.session.correct = correct;
       state.session.status = 'completed';
-      state.session.endTime = Date.now();
       const score = Math.round((correct / 20) * 100);
       const passed = score >= 75;
       const timeUsed = Math.round((45 * 60 - state.timeRemaining) / 60);
       Data.updateQuestionStats(state.session);
       
       const history = Data.getHistory();
-      history.push({
-        date: Date.now(),
-        score: score,
-        correct: correct,
-        total: 20,
-        passed: passed,
-        timeUsed: timeUsed,
-        questions: questionDetails
-      });
+      history.push({ date: Date.now(), score, correct, total: 20, passed, timeUsed, questions: questionDetails });
       Data.saveHistory(history);
       
       const totalTests = history.length;
@@ -647,33 +586,25 @@
 
       app.innerHTML = `
         <div class="card" style="text-align: center;">
-          <div class="results-icon">${passed ? '🎉' : '📚'}</div>
-          <div class="results-title">${passed ? 'Congratulations!' : 'Keep Studying!'}</div>
+          <div class="results-icon">${passed ? '✓' : '✗'}</div>
+          <div class="results-title">${passed ? 'Passed!' : 'Keep Studying'}</div>
           <div class="results-score">${score}%</div>
-          <p style="text-align: center; color: #64748b;">${correct} out of 20 correct<br>${passed ? 'You passed!' : 'Need 75% to pass.'}</p>
+          <p style="text-align: center; color: #9ca3af;">${correct}/20 correct</p>
           <div style="text-align: center; margin-top: 1.5rem;">
-            <button class="btn" onclick="renderReview()">Review Answers</button>
-            <button class="btn btn-secondary" onclick="localStorage.removeItem('current_session'); renderHome()">Home</button>
+            <button class="btn" onclick="renderReview()">Review</button>
+            <button class="btn btn-secondary" onclick="localStorage.removeItem('current_session'); renderHome()" style="margin-left: 0.5rem;">Home</button>
           </div>
         </div>
       `;
 
-      anime({ targets: '.results-icon', scale: [0, 1], rotate: [360, 0], duration: 800, easing: 'easeOutElastic(1, .5)' });
-      anime({ targets: '.results-title', opacity: [0, 1], translateY: [20, 0], delay: 300, duration: 500, easing: 'easeOutQuad' });
-      anime({ targets: '.results-score', opacity: [0, 1], scale: [0.5, 1], delay: 500, duration: 600, easing: 'easeOutBack' });
-      anime({ targets: '.btn', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(200, {start: 800}), duration: 400, easing: 'easeOutQuad' });
-
-      if (passed) setTimeout(createConfetti, 500);
+      fadeIn('.card');
+      if (passed) setTimeout(createConfetti, 200);
     }
 
     function renderReview() {
       const history = Data.getHistory();
       const lastTest = history[history.length - 1];
-      
-      if (!lastTest || !lastTest.questions) {
-        alert('No questions saved for this test.');
-        return;
-      }
+      if (!lastTest || !lastTest.questions) { alert('No questions saved.'); return; }
 
       const incorrect = lastTest.questions.filter(q => q.userAnswer !== q.correctAnswer);
       const correct = lastTest.questions.filter(q => q.userAnswer === q.correctAnswer);
@@ -681,31 +612,29 @@
       let html = `
         <div class="card">
           <button class="btn btn-secondary btn-small" onclick="renderHome()" style="margin-bottom: 1rem;">Back</button>
-          <h2 style="margin-bottom: 0.5rem;">Review Answers</h2>
-          <div class="review-btn-group">
-            <button class="btn btn-secondary btn-small" onclick="scrollToSection('incorrect')">Jump to Incorrect (${incorrect.length})</button>
-          </div>
+          <h2>Review Answers</h2>
+          ${incorrect.length > 0 ? `<button class="btn btn-secondary btn-small" onclick="scrollTo('incorrect')" style="margin-top: 1rem;">Jump to Incorrect (${incorrect.length})</button>` : ''}
         </div>
       `;
 
       if (incorrect.length > 0) {
         html += `
           <div id="incorrect" class="card">
-            <div class="review-section-title">Incorrect Answers (${incorrect.length})</div>
-            ${incorrect.map((q, idx) => `
-              <div style="margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0;">
-                <div style="color: #64748b; margin-bottom: 0.5rem;">${q.category}</div>
+            <div class="review-section-title">Incorrect (${incorrect.length})</div>
+            ${incorrect.map(q => `
+              <div style="margin-bottom: 1.5rem;">
+                <div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.5rem;">${q.category}</div>
                 <div class="question-text">${q.question}</div>
                 <div class="option" style="border-color: #16a34a; background: #dcfce7;">
                   <span class="option-letter">${String.fromCharCode(65 + q.correctAnswer)}.</span> ${q.options[q.correctAnswer]}
                   <span style="margin-left: auto; color: #16a34a;">Correct</span>
                 </div>
-                <div class="option" style="border-color: #dc2626; background: #fee2e2;">
+                <div class="option" style="border-color: #dc2626; background: #fef2f2;">
                   <span class="option-letter">${String.fromCharCode(65 + q.userAnswer)}.</span> ${q.options[q.userAnswer]}
                   <span style="margin-left: auto; color: #dc2626;">Your answer</span>
                 </div>
-                <div style="margin-top: 0.75rem; padding: 0.75rem; background: #eff6ff; border-left: 3px solid #3b82f6; font-size: 0.875rem;">
-                  <strong style="color: #1e40af;">Explanation:</strong> ${q.explanation}
+                <div style="margin-top: 0.75rem; padding: 0.75rem; background: #eff6ff; border-left: 3px solid #3b82f6; font-size: 0.875rem; color: #1e40af;">
+                  ${q.explanation}
                 </div>
               </div>
             `).join('')}
@@ -716,10 +645,10 @@
       if (correct.length > 0) {
         html += `
           <div id="correct" class="card">
-            <div class="review-section-title" style="color: #16a34a; border-color: #16a34a;">Correct Answers (${correct.length})</div>
-            ${correct.map((q, idx) => `
-              <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #e2e8f0;">
-                <div style="color: #64748b; margin-bottom: 0.5rem;">${q.category}</div>
+            <div class="review-section-title" style="color: #16a34a; border-color: #16a34a;">Correct (${correct.length})</div>
+            ${correct.map(q => `
+              <div style="margin-bottom: 1rem; padding-bottom: 1rem; border-bottom: 1px solid #f3f4f6;">
+                <div style="color: #9ca3af; font-size: 0.875rem; margin-bottom: 0.5rem;">${q.category}</div>
                 <div class="question-text">${q.question}</div>
                 <div class="option" style="border-color: #16a34a; background: #dcfce7;">
                   <span class="option-letter">${String.fromCharCode(65 + q.correctAnswer)}.</span> ${q.options[q.correctAnswer]}
@@ -731,19 +660,11 @@
         `;
       }
 
-      html += `
-        <div class="card" style="text-align: center;">
-          <button class="btn" onclick="localStorage.removeItem('current_session'); startTest()">Try Again</button>
-          <button class="btn btn-secondary" onclick="renderHome()" style="margin-left: 0.5rem;">Home</button>
-        </div>
-      `;
+      html += `<div class="card" style="text-align: center;"><button class="btn" onclick="localStorage.removeItem('current_session'); startTest()">Try Again</button></div>`;
 
       app.innerHTML = html;
-      anime({ targets: '.card', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(100), duration: 400, easing: 'easeOutQuad' });
-      
-      if (incorrect.length > 0) {
-        setTimeout(() => scrollToSection('incorrect'), 500);
-      }
+      fadeIn('.card');
+      if (incorrect.length > 0) setTimeout(() => scrollTo('incorrect'), 300);
     }
 
     function startTest() {
