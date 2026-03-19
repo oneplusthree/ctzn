@@ -12,9 +12,7 @@
     .header h1 { font-size: 1.5rem; cursor: pointer; transition: transform 0.3s; }
     .header h1:hover { transform: scale(1.02); }
     .main { flex: 1; max-width: 800px; margin: 0 auto; padding: 1.5rem; width: 100%; }
-    .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.07); opacity: 0; transform: translateY(20px); transition: all 0.3s ease; }
-    .card.visible { opacity: 1; transform: translateY(0); }
-    .card:hover { box-shadow: 0 10px 25px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .card { background: white; border-radius: 16px; padding: 1.5rem; margin-bottom: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.07); }
     .btn { display: inline-block; padding: 0.875rem 1.5rem; background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%); color: white; border: none; border-radius: 12px; font-size: 1rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(220, 38, 38, 0.3); }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4); }
     .btn:active { transform: translateY(0); }
@@ -22,17 +20,14 @@
     .btn-secondary:hover { border-color: #dc2626; color: #dc2626; background: #fef2f2; }
     .btn-small { padding: 0.5rem 1rem; font-size: 0.875rem; }
     .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1rem 0; }
-    .stat { text-align: center; padding: 1rem; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); opacity: 0; transform: scale(0.9); }
-    .stat.visible { opacity: 1; transform: scale(1); }
+    .stat { text-align: center; padding: 1rem; background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
     .stat-value { font-size: 2rem; font-weight: 700; color: #dc2626; }
     .stat-label { font-size: 0.875rem; color: #64748b; }
     .question-text { font-size: 1.125rem; font-weight: 500; margin-bottom: 1rem; }
     .options { display: flex; flex-direction: column; gap: 0.5rem; }
-    .option { padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; opacity: 0; transform: translateX(-20px); }
-    .option.visible { opacity: 1; transform: translateX(0); }
+    .option { padding: 1rem; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.3s ease; }
     .option:hover { border-color: #dc2626; background: #fef2f2; transform: translateX(5px); }
-    .option.selected { border-color: #dc2626; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%); box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); }
-    .option.selected:hover { transform: translateX(5px); }
+    .option.selected { border-color: #dc2626; background: #fef2f2; box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1); }
     .option-letter { font-weight: 600; margin-right: 0.5rem; }
     .timer { background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 12px; font-weight: 600; backdrop-filter: blur(10px); }
     .timer.warning { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); animation: pulse 1s infinite; }
@@ -40,6 +35,7 @@
     @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
     @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
     @keyframes confetti { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 100% { transform: translateY(-500px) rotate(720deg); opacity: 0; } }
+    @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
     .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; margin-bottom: 1rem; }
     .progress-fill { height: 100%; background: linear-gradient(90deg, #dc2626 0%, #f87171 100%); border-radius: 4px; transition: width 0.5s ease; }
     .dots { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
@@ -53,8 +49,7 @@
     .results-score { font-size: 4rem; font-weight: 700; text-align: center; color: #dc2626; }
     .results-title { font-size: 1.5rem; text-align: center; margin-bottom: 0.5rem; }
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; padding: 1rem; z-index: 1000; backdrop-filter: blur(5px); }
-    .modal-content { background: white; border-radius: 20px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; transform: scale(0.9); opacity: 0; transition: all 0.3s ease; }
-    .modal-overlay.show .modal-content { transform: scale(1); opacity: 1; }
+    .modal-content { background: white; border-radius: 20px; max-width: 500px; width: 100%; max-height: 90vh; overflow-y: auto; }
     .modal-header { padding: 1.5rem; text-align: center; border-bottom: 1px solid #e2e8f0; }
     .modal-header h2 { color: #dc2626; }
     .modal-body { padding: 1.5rem; }
@@ -62,8 +57,7 @@
     .accept-checkbox { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem; }
     .footer { text-align: center; padding: 1rem; color: #64748b; font-size: 0.75rem; }
     .hidden { display: none !important; }
-    .history-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; opacity: 0; transform: translateX(-20px); }
-    .history-item.visible { opacity: 1; transform: translateX(0); }
+    .history-item { display: flex; justify-content: space-between; align-items: center; padding: 0.75rem; border-bottom: 1px solid #e2e8f0; }
     .history-item:last-child { border-bottom: none; }
     .history-date { font-size: 0.875rem; color: #64748b; }
     .history-score { font-weight: 600; }
@@ -72,19 +66,19 @@
     .chart-container { margin: 1rem 0; padding: 1.5rem; background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%); border-radius: 12px; }
     .chart-bar { display: flex; align-items: flex-end; gap: 8px; height: 120px; padding-top: 20px; }
     .chart-bar-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; height: 100%; }
-    .chart-bar-fill { width: 100%; background: linear-gradient(180deg, #dc2626 0%, #f87171 100%); border-radius: 6px 6px 0 0; min-height: 4px; transform-origin: bottom; }
+    .chart-bar-fill { width: 100%; background: linear-gradient(180deg, #dc2626 0%, #f87171 100%); border-radius: 6px 6px 0 0; min-height: 4px; }
     .chart-bar-label { font-size: 0.625rem; color: #64748b; }
     .weak-areas { margin-top: 1rem; }
-    .weak-item { display: flex; justify-content: space-between; padding: 0.75rem; border-radius: 8px; margin-bottom: 0.5rem; background: #fef2f2; opacity: 0; transform: translateX(-20px); }
-    .weak-item.visible { opacity: 1; transform: translateX(0); }
+    .weak-item { display: flex; justify-content: space-between; padding: 0.75rem; border-radius: 8px; margin-bottom: 0.5rem; background: #fef2f2; }
     .weak-name { font-size: 0.875rem; font-weight: 500; }
     .weak-count { font-size: 0.875rem; font-weight: 600; color: #dc2626; }
     .confetti-piece { position: fixed; width: 10px; height: 10px; pointer-events: none; z-index: 9999; }
     .hero-icon { font-size: 4rem; display: block; margin-bottom: 1rem; animation: bounce 2s ease-in-out infinite; }
-    .loading-dots { display: flex; gap: 8px; justify-content: center; }
-    .loading-dot { width: 12px; height: 12px; background: #dc2626; border-radius: 50%; animation: bounce 1s ease-in-out infinite; }
-    .loading-dot:nth-child(2) { animation-delay: 0.1s; }
-    .loading-dot:nth-child(3) { animation-delay: 0.2s; }
+    .fade-in { animation: fadeSlideIn 0.5s ease forwards; }
+    .fade-in-delay-1 { animation: fadeSlideIn 0.5s ease 0.1s forwards; opacity: 0; }
+    .fade-in-delay-2 { animation: fadeSlideIn 0.5s ease 0.2s forwards; opacity: 0; }
+    .fade-in-delay-3 { animation: fadeSlideIn 0.5s ease 0.3s forwards; opacity: 0; }
+    .fade-in-delay-4 { animation: fadeSlideIn 0.5s ease 0.4s forwards; opacity: 0; }
     @media (max-width: 640px) { .stats { grid-template-columns: 1fr; } }
   </style>
 </head>
@@ -208,30 +202,6 @@
       }
     };
 
-    function animateIn(selector, delay = 0) {
-      anime({
-        targets: selector,
-        opacity: [0, 1],
-        translateY: [20, 0],
-        delay: anime.stagger(delay),
-        duration: 500,
-        easing: 'easeOutQuad'
-      });
-    }
-
-    function animateCard(card, delay = 0) {
-      setTimeout(() => {
-        card.classList.add('visible');
-        anime({
-          targets: card,
-          opacity: [0, 1],
-          translateY: [20, 0],
-          duration: 500,
-          easing: 'easeOutQuad'
-        });
-      }, delay);
-    }
-
     function createConfetti() {
       const colors = ['#dc2626', '#f87171', '#16a34a', '#fbbf24', '#3b82f6', '#8b5cf6'];
       for (let i = 0; i < 50; i++) {
@@ -248,11 +218,21 @@
       }
     }
 
+    function animateFadeIn(selector, delay = 0) {
+      const el = document.querySelector(selector);
+      if (el) {
+        el.style.opacity = '0';
+        setTimeout(() => {
+          anime({ targets: el, opacity: [0, 1], translateY: [20, 0], duration: 400, easing: 'easeOutQuad' });
+        }, delay);
+      }
+    }
+
     if (localStorage.getItem('disclaimer_accepted') === 'true') {
       modal.classList.add('hidden');
       init();
     } else {
-      modal.classList.add('show');
+      modal.style.display = 'flex';
       anime({ targets: '.modal-content', scale: [0.9, 1], opacity: [0, 1], duration: 400, easing: 'easeOutBack' });
     }
 
@@ -268,8 +248,7 @@
           duration: 300,
           easing: 'easeInQuad',
           complete: () => {
-            modal.classList.remove('show');
-            modal.classList.add('hidden');
+            modal.style.display = 'none';
             init();
           }
         });
@@ -346,15 +325,17 @@
       let chartHtml = '';
       if (recentHistory.length >= 2) {
         chartHtml = `
-          <div class="chart-container">
-            <h4 style="margin-bottom: 0.5rem;">Last ${recentHistory.length} Tests</h4>
-            <div class="chart-bar">
-              ${recentHistory.map((h, i) => `
-                <div class="chart-bar-item">
-                  <div class="chart-bar-fill" data-height="${(h.score / 100) * 100}" style="height: 0%"></div>
-                  <span class="chart-bar-label">${h.score}%</span>
-                </div>
-              `).join('')}
+          <div id="chart-card" class="card fade-in-delay-2">
+            <div class="chart-container">
+              <h4 style="margin-bottom: 0.5rem;">Last ${recentHistory.length} Tests</h4>
+              <div class="chart-bar">
+                ${recentHistory.map((h, i) => `
+                  <div class="chart-bar-item">
+                    <div class="chart-bar-fill" data-height="${(h.score / 100) * 100}" style="height: 0%"></div>
+                    <span class="chart-bar-label">${h.score}%</span>
+                  </div>
+                `).join('')}
+              </div>
             </div>
           </div>
         `;
@@ -363,20 +344,22 @@
       let weakHtml = '';
       if (weakAreas.length > 0 && weakAreas[0].attempts > 0) {
         weakHtml = `
-          <div class="weak-areas">
-            <h4 style="margin-bottom: 0.5rem;">Areas to Focus On</h4>
-            ${weakAreas.map(w => `
-              <div class="weak-item">
-                <span class="weak-name">${w.category}</span>
-                <span class="weak-count">${w.errorRate}% errors</span>
-              </div>
-            `).join('')}
+          <div id="weak-card" class="card fade-in-delay-3">
+            <div class="weak-areas">
+              <h4 style="margin-bottom: 0.5rem;">Areas to Focus On</h4>
+              ${weakAreas.map(w => `
+                <div class="weak-item">
+                  <span class="weak-name">${w.category}</span>
+                  <span class="weak-count">${w.errorRate}% errors</span>
+                </div>
+              `).join('')}
+            </div>
           </div>
         `;
       }
 
       app.innerHTML = `
-        <div class="card">
+        <div id="main-card" class="card">
           <span class="hero-icon">🍁</span>
           <h2 style="text-align: center; margin-bottom: 1rem;">Canadian Citizenship Practice Test</h2>
           <p style="text-align: center; color: #64748b; margin-bottom: 1.5rem;">Based on official Discover Canada study guide</p>
@@ -386,13 +369,13 @@
             <div class="stat"><div class="stat-value">${avgScore}%</div><div class="stat-label">Average</div></div>
           </div>
           <div style="text-align: center;">
-            <button class="btn" onclick="startTest()">Start New Test</button>
+            <button id="start-btn" class="btn">Start New Test</button>
           </div>
         </div>
         ${chartHtml}
         ${weakHtml}
         ${history.length > 0 ? `
-          <div class="card">
+          <div id="recent-card" class="card fade-in-delay-4">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
               <h3>Recent Tests</h3>
               <button class="btn btn-secondary btn-small" onclick="renderHistory()">View All</button>
@@ -407,7 +390,7 @@
             `).join('')}
           </div>
         ` : ''}
-        <div class="card" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left: 4px solid #f59e0b;">
+        <div id="info-card" class="card fade-in-delay-4" style="background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%); border-left: 4px solid #f59e0b;">
           <h3 style="margin-bottom: 0.5rem;">Test Format</h3>
           <ul style="margin-left: 1.5rem; color: #92400e;">
             <li>20 questions (focused on weak areas)</li>
@@ -420,10 +403,14 @@
 
       anime({ targets: '.hero-icon', scale: [0, 1], rotate: [360, 0], duration: 800, easing: 'easeOutElastic(1, .5)' });
       anime({ targets: '.stat', opacity: [0, 1], scale: [0.8, 1], delay: anime.stagger(100, {start: 300}), duration: 500, easing: 'easeOutQuad' });
-      anime({ targets: '.btn', opacity: [0, 1], translateY: [20, 0], delay: 600, duration: 500, easing: 'easeOutQuad' });
-      if (chartHtml) setTimeout(() => animeChartBars(), 100);
-      if (weakAreas.length > 0) anime({ targets: '.weak-item', opacity: [0, 1], translateX: [-20, 0], delay: anime.stagger(100), duration: 400, easing: 'easeOutQuad' });
-      anime({ targets: '.history-item', opacity: [0, 1], translateX: [-20, 0], delay: anime.stagger(50), duration: 400, easing: 'easeOutQuad' });
+      anime({ targets: '#start-btn', opacity: [0, 1], translateY: [20, 0], delay: 600, duration: 500, easing: 'easeOutQuad' });
+
+      setTimeout(() => {
+        document.querySelectorAll('.chart-bar-fill').forEach(bar => {
+          const height = bar.getAttribute('data-height');
+          anime({ targets: bar, height: [0, height + '%'], duration: 800, easing: 'easeOutQuad' });
+        });
+      }, 300);
 
       window.startTest = function() {
         const testIds = selectQuestions(20);
@@ -433,13 +420,8 @@
         renderTest();
         startTimer();
       };
-    }
 
-    function animateChartBars() {
-      document.querySelectorAll('.chart-bar-fill').forEach(bar => {
-        const height = bar.getAttribute('data-height');
-        anime({ targets: bar, height: [0, height + '%'], duration: 800, easing: 'easeOutQuad' });
-      });
+      document.getElementById('start-btn').addEventListener('click', window.startTest);
     }
 
     function renderHistory() {
@@ -451,7 +433,7 @@
 
       app.innerHTML = `
         <div class="card">
-          <button class="btn btn-secondary btn-small" onclick="renderHome()" style="margin-bottom: 1rem;">← Back</button>
+          <button class="btn btn-secondary btn-small" onclick="renderHome()" style="margin-bottom: 1rem;">Back</button>
           <h2 style="margin-bottom: 1rem;">Test History</h2>
           <div class="stats">
             <div class="stat"><div class="stat-value">${totalTests}</div><div class="stat-label">Total Tests</div></div>
@@ -465,7 +447,7 @@
               <div class="history-item">
                 <div>
                   <div style="font-weight: 500;">${new Date(h.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</div>
-                  <div class="history-date">${h.correct}/${h.total} correct • ${h.timeUsed || '?'} min</div>
+                  <div class="history-date">${h.correct}/${h.total} correct</div>
                 </div>
                 <div style="text-align: right;">
                   <span class="history-score ${h.passed ? 'pass' : 'fail'}">${h.score}%</span>
@@ -481,7 +463,6 @@
       `;
 
       anime({ targets: '.card', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(100), duration: 500, easing: 'easeOutQuad' });
-      anime({ targets: '.history-item', opacity: [0, 1], translateX: [-20, 0], delay: anime.stagger(50), duration: 400, easing: 'easeOutQuad' });
     }
 
     function renderTest() {
@@ -505,26 +486,25 @@
           <div class="question-text">${q.text}</div>
           <div class="options">
             ${q.options.map((opt, i) => `
-              <div class="option ${state.session.answers[qId] === i ? 'selected' : ''}" onclick="selectOption(${i})">
+              <div id="option-${i}" class="option ${state.session.answers[qId] === i ? 'selected' : ''}" onclick="selectOption(${i})">
                 <span class="option-letter">${String.fromCharCode(65 + i)}.</span> ${opt}
               </div>
             `).join('')}
           </div>
         </div>
         <div class="nav">
-          <button class="btn btn-secondary" onclick="prevQ()" ${state.session.currentIndex === 0 ? 'disabled' : ''}>Previous</button>
-          ${state.session.currentIndex === state.session.questionIds.length - 1 ? '<button class="btn" onclick="submitTest()">Submit Test</button>' : '<button class="btn" onclick="nextQ()">Next</button>'}
+          <button id="prev-btn" class="btn btn-secondary" onclick="prevQ()" ${state.session.currentIndex === 0 ? 'disabled' : ''}>Previous</button>
+          ${state.session.currentIndex === state.session.questionIds.length - 1 ? '<button id="submit-btn" class="btn" onclick="submitTest()">Submit Test</button>' : '<button id="next-btn" class="btn" onclick="nextQ()">Next</button>'}
         </div>
       `;
 
       anime({ targets: '.card', opacity: [0, 1], translateY: [30, 0], duration: 400, easing: 'easeOutQuad' });
       anime({ targets: '.option', opacity: [0, 1], translateX: [-20, 0], delay: anime.stagger(80, {start: 200}), duration: 400, easing: 'easeOutQuad' });
-      anime({ targets: '.nav .btn', opacity: [0, 1], scale: [0.9, 1], delay: anime.stagger(100, {start: 400}), duration: 300, easing: 'easeOutQuad' });
 
       window.selectOption = function(i) {
         state.session.answers[qId] = i;
         saveState();
-        anime({ targets: `.option:nth-child(${i + 1})`, scale: [1, 1.02], duration: 150, easing: 'easeOutQuad', complete: () => anime({ targets: `.option:nth-child(${i + 1})`, scale: [1.02, 1], duration: 150, easing: 'easeOutQuad' }) });
+        anime({ targets: `#option-${i}`, scale: [1, 1.02], duration: 150, easing: 'easeOutQuad', complete: () => anime({ targets: `#option-${i}`, scale: [1.02, 1], duration: 150, easing: 'easeOutQuad' }) });
         renderTest();
       };
       window.nextQ = function() { if (state.session.currentIndex < 19) { state.session.currentIndex++; renderTest(); } };
@@ -580,7 +560,7 @@
     function renderReview() {
       let html = `
         <div class="card">
-          <button class="btn btn-secondary btn-small" onclick="submitTest()" style="margin-bottom:1rem">← Back to Results</button>
+          <button class="btn btn-secondary btn-small" onclick="submitTest()" style="margin-bottom:1rem">Back to Results</button>
           <h2>Review Answers</h2>
         </div>
       `;
@@ -594,14 +574,14 @@
             <div class="question-text">${q.text}</div>
             <div class="options">
               ${q.options.map((opt, i) => `
-                <div class="option ${i === q.correctAnswer ? 'selected' : ''}" style="${i === q.correctAnswer ? 'border-color: #16a34a; background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);' : i === userAns && !correct ? 'border-color: #dc2626; background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);' : ''}">
+                <div class="option ${i === q.correctAnswer ? 'selected' : ''}" style="${i === q.correctAnswer ? 'border-color: #16a34a; background: #dcfce7;' : i === userAns && !correct ? 'border-color: #dc2626; background: #fef2f2;' : ''}">
                   <span class="option-letter">${String.fromCharCode(65 + i)}.</span> ${opt}
                   ${i === userAns ? '<span style="margin-left: auto; color: #64748b;">Your answer</span>' : ''}
-                  ${i === q.correctAnswer ? '<span style="margin-left: auto; color: #16a34a;">✓ Correct</span>' : ''}
+                  ${i === q.correctAnswer ? '<span style="margin-left: auto; color: #16a34a;">Correct</span>' : ''}
                 </div>
               `).join('')}
             </div>
-            <div style="margin-top: 1rem; padding: 1rem; background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%); border-left: 4px solid #3b82f6; border-radius: 4px;">
+            <div style="margin-top: 1rem; padding: 1rem; background: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
               <strong style="color: #1e40af;">Explanation:</strong> ${q.explanation}
             </div>
           </div>
