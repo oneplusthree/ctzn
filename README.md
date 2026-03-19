@@ -2,7 +2,7 @@
 
 A Progressive Web App (PWA) for practicing the Canadian citizenship exam, based on the official "Discover Canada: The Rights and Responsibilities of Citizenship" study guide.
 
-## ⚠️ Disclaimer
+## Disclaimer
 
 **This is a personal hobby project for educational purposes only.**
 
@@ -14,13 +14,13 @@ See [DISCLAIMER.md](DISCLAIMER.md) for full legal notice.
 
 ## Features
 
-- 📝 100 practice questions covering all topics from Discover Canada
-- ⏱️ 45-minute timed tests (matching real exam format)
-- 💾 Progress auto-saved - resume tests anytime
-- 📊 Track your scores and history
-- 📖 Detailed answer review with explanations
-- 📱 Installable as PWA (works offline)
-- 🔒 All data stored locally on your device
+- 100 practice questions covering all topics from Discover Canada
+- 45-minute timed tests (matching real exam format)
+- Progress auto-saved - resume tests anytime
+- Track scores and history with full question details
+- Detailed answer review - incorrect answers shown first
+- Spaced repetition - frequently missed questions appear more often
+- All data stored locally on your device
 
 ## Test Format
 
@@ -28,81 +28,99 @@ See [DISCLAIMER.md](DISCLAIMER.md) for full legal notice.
 - 4 multiple choice options per question
 - 75% passing score (15/20 correct)
 - 45-minute time limit
+- Auto-advances to next question on selection
 
-## Tech Stack
+## Quick Start
 
-- Vanilla JavaScript (no framework)
-- IndexedDB for data persistence
-- Service Worker for offline support
-- CSS3 for styling
+### Live Demo
 
-## Installation
+Visit: https://YOUR_USERNAME.github.io/REPO_NAME/
 
-### Option 1: GitHub Pages (Recommended)
+### Local Development
 
-This app is designed to work directly from GitHub Pages. Simply host this repository on GitHub Pages.
+```bash
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/citizenship-test.git
+cd citizenship-test
 
-### Option 2: Local Development
+# Serve locally
+python -m http.server 8000
+# or
+npx serve
 
-1. Clone the repository
-2. Serve with any local server:
-   ```bash
-   python -m http.server 8000
-   # or
-   npx serve
-   ```
-3. Open http://localhost:8000
+# Open http://localhost:8000
+```
 
-### Option 3: Install as PWA
+### Install as PWA
 
-1. Open the app in a modern browser (Chrome, Edge, Safari, Firefox)
-2. Click "Add to Home Screen" when prompted or use browser menu
+1. Open the app in Chrome, Edge, or Safari
+2. Click "Add to Home Screen" or use browser menu
+
+## Deployment
+
+### GitHub Pages (Automatic)
+
+1. Fork or push this repo to GitHub
+2. Go to **Settings** → **Pages**
+3. Select **Source: Deploy from a branch**
+4. Select **Branch: main / (root)**
+5. Click **Save**
+
+Your app will be live at: `https://YOUR_USERNAME.github.io/REPO_NAME/`
+
+Auto-deploy is set up via GitHub Actions (see `.github/workflows/deploy.yml`).
+
+### Custom Domain
+
+1. Add `CNAME` file with your domain
+2. Configure DNS:
+   - A record: `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`
+   - CNAME: `www` → `YOUR_USERNAME.github.io`
+3. Enable **Enforce HTTPS** in GitHub Pages settings
 
 ## Project Structure
 
 ```
 /
-├── index.html           # Main HTML entry point
+├── index.html           # Main app (all-in-one HTML)
 ├── manifest.json        # PWA manifest
 ├── sw.js               # Service worker
-├── css/
-│   └── styles.css      # Styles
 ├── js/
-│   ├── app.js          # Main application logic
-│   ├── questions.js    # Question bank (100 questions)
-│   ├── router.js       # Simple SPA router
-│   └── storage.js      # IndexedDB wrapper
-├── assets/
-│   └── icons/          # PWA icons
-├── DISCLAIMER.md       # Legal disclaimer
-├── LICENSE             # MIT License
-├── PRIVACY.md          # Privacy policy
-├── CONTRIBUTING.md     # Contribution guidelines
-├── SECURITY.md         # Security policy
-└── README.md           # This file
+│   ├── anime.min.js    # Animation library (local)
+│   └── questions.js    # Question bank (100 questions)
+├── assets/icons/       # PWA icons
+├── .github/workflows/  # GitHub Actions
+├── DISCLAIMER.md
+├── LICENSE
+├── PRIVACY.md
+├── CONTRIBUTING.md
+├── SECURITY.md
+└── README.md
 ```
 
-## Data Storage
+## Security
 
-All data is stored locally in your browser using IndexedDB:
-- Test progress and answers
-- Completed test results
-- Personal stats
+- No external API calls
+- No analytics or tracking
+- All data stored in browser localStorage
+- No server-side code
+- HTTPS enforced on GitHub Pages
 
-**No data is sent to any server.**
+See [SECURITY.md](SECURITY.md) for details.
+
+## Privacy
+
+- All data stays on your device
+- No personal information collected
+- No cookies used
+- Works completely offline
+
+See [PRIVACY.md](PRIVACY.md) for details.
 
 ## Contributing
 
 This project is not accepting contributions. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
-## Security
-
-This is a static client-side app with no server or database. See [SECURITY.md](SECURITY.md) for details.
-
 ## License
 
 MIT License - see [LICENSE](LICENSE)
-
----
-
-*Good luck with your citizenship test preparation! 🍁*

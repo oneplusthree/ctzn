@@ -1,19 +1,32 @@
 # OS files
 .DS_Store
 Thumbs.db
+._*
 
 # Editor files
 *.swp
 *.swo
 .vscode/
 .idea/
+*.sublime-*
 
 # Logs
 *.log
+npm-debug.log*
 
-# Node modules (if any)
+# Dependencies
 node_modules/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+build/
 
 # Temporary files
 *.tmp
 *.temp
+.cache/
