@@ -588,7 +588,7 @@
           <div class="question-text">${q.text}</div>
           <div class="options" role="radiogroup" aria-label="Answer options">
             ${q.options.map((opt, i) => `
-              <div id="option-${i}" class="option ${state.session.answers[qId] === i ? 'selected' : ''}" 
+              <div id="q${state.session.currentIndex}-option-${i}" class="option ${state.session.answers[qId] === i ? 'selected' : ''}" 
                    onclick="selectOption(${i})" 
                    onkeydown="handleOptionKeydown(event, ${i})"
                    role="radio" 
@@ -610,6 +610,29 @@
         const selectedOption = document.querySelector('.option.selected');
         if (selectedOption) selectedOption.focus();
       }, 100);
+    }
+
+    function selectOption(i) {
+      const qId = state.session.questionIds[state.session.currentIndex];
+      state.session.answers[qId] = i;
+      saveState();
+      const isLast = state.session.currentIndex >= state.session.questionIds.length - 1;
+      const optionId = `#q${state.session.currentIndex}-option-${i}`;
+      
+      anime({
+        targets: optionId,
+        scale: [1, 1.02],
+        duration: 150,
+        easing: 'easeOutQuad',
+        complete: () => {
+          if (isLast) {
+            submitTest();
+          } else {
+            state.session.currentIndex++;
+            renderTest();
+          }
+        }
+      });
     }
 
     function selectOption(i) {
