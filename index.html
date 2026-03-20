@@ -115,6 +115,16 @@
   <script src="js/anime.min.js"></script>
   <script src="js/questions.js"></script>
   <script>
+    const CONFIG = {
+      QUESTIONS_PER_TEST: 20,
+      TIME_LIMIT: 45 * 60,
+      PASS_THRESHOLD: 75,
+      TIMER_WARNING_SECONDS: 10 * 60,
+      MAX_HISTORY: 50,
+      KEY_DISCLAIMER: 'disclaimer_accepted',
+      KEY_SESSION: 'current_session'
+    };
+
     const app = document.getElementById('app');
     const timerEl = document.getElementById('timer');
     const modal = document.getElementById('disclaimer-modal');
@@ -123,7 +133,7 @@
 
     let state = {
       session: null,
-      timeRemaining: 45 * 60,
+      timeRemaining: CONFIG.TIME_LIMIT,
       timerInterval: null
     };
 
@@ -132,8 +142,17 @@
       KEY_HISTORY: 'citz_history',
       KEY_QUESTION_STATS: 'citz_qstats',
 
+      safeParse(json, fallback) {
+        try {
+          return json ? JSON.parse(json) : fallback;
+        } catch (e) {
+          console.error('JSON parse error:', e);
+          return fallback;
+        }
+      },
+
       getStats() {
-        return JSON.parse(localStorage.getItem(this.KEY_STATS) || '{"total":0,"best":0,"avg":0}');
+        return this.safeParse(localStorage.getItem(this.KEY_STATS), {total: 0, best: 0, avg: 0});
       },
 
       saveStats(stats) {
@@ -141,16 +160,16 @@
       },
 
       getHistory() {
-        return JSON.parse(localStorage.getItem(this.KEY_HISTORY) || '[]');
+        return this.safeParse(localStorage.getItem(this.KEY_HISTORY), []);
       },
 
       saveHistory(history) {
-        if (history.length > 50) history = history.slice(-50);
+        if (history.length > CONFIG.MAX_HISTORY) history = history.slice(-CONFIG.MAX_HISTORY);
         localStorage.setItem(this.KEY_HISTORY, JSON.stringify(history));
       },
 
       getQuestionStats() {
-        return JSON.parse(localStorage.getItem(this.KEY_QUESTION_STATS) || '{}');
+        return this.safeParse(localStorage.getItem(this.KEY_QUESTION_STATS), {});
       },
 
       saveQuestionStats(qstats) {
@@ -210,7 +229,7 @@
       anime({ targets: el, opacity: [0, 1], translateY: [10, 0], duration: 300, easing: 'easeOutQuad' });
     }
 
-    if (localStorage.getItem('disclaimer_accepted') === 'true') {
+    if (localStorage.getItem(CONFIG.KEY_DISCLAIMER) === 'true') {
       modal.classList.add('hidden');
       init();
     }
@@ -219,26 +238,30 @@
 
     continueBtn.addEventListener('click', () => {
       if (checkbox.checked) {
-        localStorage.setItem('disclaimer_accepted', 'true');
+        localStorage.setItem(CONFIG.KEY_DISCLAIMER, 'true');
         modal.classList.add('hidden');
         init();
       }
     });
 
     function init() {
-      const saved = localStorage.getItem('current_session');
+      const saved = localStorage.getItem(CONFIG.KEY_SESSION);
       if (saved) {
-        state.session = JSON.parse(saved);
-        if (state.session.status === 'in-progress') {
-          renderTest();
-          return;
+        try {
+          state.session = JSON.parse(saved);
+          if (state.session?.status === 'in-progress') {
+            renderTest();
+            return;
+          }
+        } catch (e) {
+          console.error('Failed to parse session:', e);
         }
       }
       renderHome();
     }
 
     function saveState() {
-      localStorage.setItem('current_session', JSON.stringify(state.session));
+      localStorage.setItem(CONFIG.KEY_SESSION, JSON.stringify(state.session));
     }
 
     function startTimer() {
@@ -249,7 +272,7 @@
         const m = Math.floor(state.timeRemaining / 60);
         const s = state.timeRemaining % 60;
         timerEl.textContent = `${m}:${s.toString().padStart(2, '0')}`;
-        if (state.timeRemaining <= 300) timerEl.classList.add('warning');
+        if (state.timeRemaining <= CONFIG.TIMER_WARNING_SECONDS) timerEl.classList.add('warning');
         if (state.timeRemaining <= 0) submitTest();
       }, 1000);
     }
@@ -259,7 +282,7 @@
       timerEl.classList.add('hidden');
     }
 
-    function selectQuestions(count = 20) {
+    function selectQuestions(count = CONFIG.QUESTIONS_PER_TEST) {
       const qstats = Data.getQuestionStats();
       const allIds = Object.keys(Questions.getAll());
       const scored = allIds.map(id => {
@@ -281,7 +304,7 @@
 
     function renderHome() {
       stopTimer();
-      localStorage.removeItem('current_session');
+      localStorage.removeItem(CONFIG.KEY_SESSION);
       const history = Data.getHistory();
       const weakAreas = Data.getWeakAreas(3);
       const recentHistory = history.slice(-10).reverse();
@@ -393,7 +416,14 @@
             <div class="stat"><div class="stat-value">${bestScore}%</div><div class="stat-label">Best Score</div></div>
           </div>
         </div>
-        ${history.length === 0 ? `<div class="card" style="text-align: center; color: #9ca3af;"><p>No tests completed yet.</p></div>` : `
+        ${history.length === 0 ? `
+          <div class="card" style="text-align: center; padding: 3rem 1.5rem;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">📝</div>
+            <h3 style="color: #6b7280; margin-bottom: 0.5rem;">No Tests Yet</h3>
+            <p style="color: #9ca3af; margin-bottom: 1.5rem;">Take your first practice test to see your history here.</p>
+            <button class="btn" onclick="startTest()">Start Test</button>
+          </div>
+        ` : `
           <div class="card">
             ${history.map((h, idx) => `
               <div class="history-item" onclick="renderHistoryDetail(${history.length - 1 - idx})">
@@ -425,8 +455,8 @@
         return;
       }
 
-      const incorrect = test.questions.filter(q => q.userAnswer !== q.correctAnswer);
-      const correct = test.questions.filter(q => q.userAnswer === q.correctAnswer);
+      const incorrect = test.questions.filter(q => q.userAnswer === undefined || q.userAnswer !== q.correctAnswer);
+      const correct = test.questions.filter(q => q.userAnswer !== undefined && q.userAnswer === q.correctAnswer);
 
       let html = `
         <div class="card">
@@ -458,10 +488,16 @@
                   <span class="option-letter">${String.fromCharCode(65 + q.correctAnswer)}.</span> ${q.options[q.correctAnswer]}
                   <span style="margin-left: auto; color: #16a34a;">Correct</span>
                 </div>
+                ${q.userAnswer !== undefined ? `
                 <div class="option" style="border-color: #dc2626; background: #fef2f2;">
-                  <span class="option-letter">${String.fromCharCode(65 + q.userAnswer)}.</span> ${q.options[q.userAnswer]}
+                  <span class="option-letter">${String.fromCharCode(65 + q.userAnswer)}.</span> ${q.options[q.userAnswer] || 'N/A'}
                   <span style="margin-left: auto; color: #dc2626;">Your answer</span>
                 </div>
+                ` : `
+                <div class="option" style="border-color: #dc2626; background: #fef2f2;">
+                  <span style="color: #dc2626;">Skipped</span>
+                </div>
+                `}
                 <div style="margin-top: 0.75rem; padding: 0.75rem; background: #eff6ff; border-left: 3px solid #3b82f6; font-size: 0.875rem; color: #1e40af;">
                   ${q.explanation}
                 </div>
@@ -521,19 +557,30 @@
             <span>${q.category}</span>
           </div>
           <div class="question-text">${q.text}</div>
-          <div class="options">
+          <div class="options" role="radiogroup" aria-label="Answer options">
             ${q.options.map((opt, i) => `
-              <div id="option-${i}" class="option ${state.session.answers[qId] === i ? 'selected' : ''}" onclick="selectOption(${i})">
+              <div id="option-${i}" class="option ${state.session.answers[qId] === i ? 'selected' : ''}" 
+                   onclick="selectOption(${i})" 
+                   onkeydown="handleOptionKeydown(event, ${i})"
+                   role="radio" 
+                   aria-checked="${state.session.answers[qId] === i}" 
+                   tabindex="${i === 0 ? 0 : -1}"
+                   aria-label="Option ${String.fromCharCode(65 + i)}: ${opt}">
                 <span class="option-letter">${String.fromCharCode(65 + i)}.</span> ${opt}
               </div>
             `).join('')}
           </div>
         </div>
         <div class="nav">
-          <button class="btn btn-secondary" onclick="prevQ()" ${state.session.currentIndex === 0 ? 'disabled' : ''}>Previous</button>
-          ${state.session.currentIndex === state.session.questionIds.length - 1 ? '<button class="btn" onclick="submitTest()">Submit</button>' : '<button class="btn btn-secondary" onclick="nextQ()">Skip</button>'}
+          <button class="btn btn-secondary" onclick="prevQ()" ${state.session.currentIndex === 0 ? 'disabled' : ''} aria-label="Previous question">Previous</button>
+          ${state.session.currentIndex === state.session.questionIds.length - 1 ? '<button class="btn" onclick="submitTest()" aria-label="Submit test">Submit</button>' : '<button class="btn btn-secondary" onclick="nextQ()" aria-label="Skip to next question">Skip</button>'}
         </div>
       `;
+      
+      setTimeout(() => {
+        const selectedOption = document.querySelector('.option.selected');
+        if (selectedOption) selectedOption.focus();
+      }, 100);
     }
 
     function selectOption(i) {
@@ -563,6 +610,24 @@
     function prevQ() { if (state.session.currentIndex > 0) { state.session.currentIndex--; renderTest(); } }
     function goTo(i) { state.session.currentIndex = i; renderTest(); }
 
+    function handleOptionKeydown(event, currentIndex) {
+      const options = document.querySelectorAll('.option');
+      let newIndex = currentIndex;
+      
+      if (event.key === 'ArrowDown' || event.key === 'ArrowRight') {
+        newIndex = (currentIndex + 1) % options.length;
+      } else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+        newIndex = (currentIndex - 1 + options.length) % options.length;
+      } else {
+        return;
+      }
+      
+      event.preventDefault();
+      options[newIndex].focus();
+      options[newIndex].setAttribute('tabindex', '0');
+      options[currentIndex].setAttribute('tabindex', '-1');
+    }
+
     function submitTest() {
       if (state.session.submitted) return;
       state.session.submitted = true;
@@ -573,7 +638,8 @@
       state.session.questionIds.forEach(qId => {
         const q = Questions.get(qId);
         const userAnswer = state.session.answers[qId];
-        if (userAnswer === q.correctAnswer) correct++;
+        const isCorrect = userAnswer !== undefined && userAnswer === q.correctAnswer;
+        if (isCorrect) correct++;
         questionDetails.push({
           id: qId, question: q.text, options: q.options,
           correctAnswer: q.correctAnswer, userAnswer: userAnswer,
@@ -583,29 +649,30 @@
       
       state.session.correct = correct;
       state.session.status = 'completed';
-      const score = Math.round((correct / 20) * 100);
-      const passed = score >= 75;
-      const timeUsed = Math.round((45 * 60 - state.timeRemaining) / 60);
+      const score = Math.round((correct / CONFIG.QUESTIONS_PER_TEST) * 100);
+      const passed = score >= CONFIG.PASS_THRESHOLD;
+      const timeUsed = Math.round((CONFIG.TIME_LIMIT - state.timeRemaining) / 60);
       Data.updateQuestionStats(state.session);
       
       const history = Data.getHistory();
-      history.push({ date: Date.now(), score, correct, total: 20, passed, timeUsed, questions: questionDetails });
+      history.push({ date: Date.now(), score, correct, total: CONFIG.QUESTIONS_PER_TEST, passed, timeUsed, questions: questionDetails });
       Data.saveHistory(history);
       
       const totalTests = history.length;
-      const bestScore = Math.max(...history.map(h => h.score));
-      const avgScore = Math.round(history.reduce((a, b) => a + b.score, 0) / totalTests);
+      const scores = history.map(h => h.score);
+      const bestScore = scores.length > 0 ? Math.max(...scores) : 0;
+      const avgScore = totalTests > 0 ? Math.round(history.reduce((a, b) => a + b.score, 0) / totalTests) : 0;
       Data.saveStats({ total: totalTests, best: bestScore, avg: avgScore });
 
       app.innerHTML = `
         <div class="card" style="text-align: center;">
           <div class="results-icon">${passed ? '✓' : '✗'}</div>
           <div class="results-title">${passed ? 'Passed!' : 'Keep Studying'}</div>
-          <div class="results-score">${score}%</div>
-          <p style="text-align: center; color: #9ca3af;">${correct}/20 correct</p>
+           <div class="results-score">${score}%</div>
+          <p style="text-align: center; color: #9ca3af;">${correct}/${CONFIG.QUESTIONS_PER_TEST} correct</p>
           <div style="text-align: center; margin-top: 1.5rem;">
             <button class="btn" onclick="renderReview()">Review</button>
-            <button class="btn btn-secondary" onclick="localStorage.removeItem('current_session'); renderHome()" style="margin-left: 0.5rem;">Home</button>
+            <button class="btn btn-secondary" onclick="localStorage.removeItem(CONFIG.KEY_SESSION); renderHome()" style="margin-left: 0.5rem;">Home</button>
           </div>
         </div>
       `;
@@ -619,8 +686,8 @@
       const lastTest = history[history.length - 1];
       if (!lastTest || !lastTest.questions) { alert('No questions saved.'); return; }
 
-      const incorrect = lastTest.questions.filter(q => q.userAnswer !== q.correctAnswer);
-      const correct = lastTest.questions.filter(q => q.userAnswer === q.correctAnswer);
+      const incorrect = lastTest.questions.filter(q => q.userAnswer === undefined || q.userAnswer !== q.correctAnswer);
+      const correct = lastTest.questions.filter(q => q.userAnswer !== undefined && q.userAnswer === q.correctAnswer);
 
       let html = `
         <div class="card">
@@ -642,10 +709,16 @@
                   <span class="option-letter">${String.fromCharCode(65 + q.correctAnswer)}.</span> ${q.options[q.correctAnswer]}
                   <span style="margin-left: auto; color: #16a34a;">Correct</span>
                 </div>
+                ${q.userAnswer !== undefined ? `
                 <div class="option" style="border-color: #dc2626; background: #fef2f2;">
-                  <span class="option-letter">${String.fromCharCode(65 + q.userAnswer)}.</span> ${q.options[q.userAnswer]}
+                  <span class="option-letter">${String.fromCharCode(65 + q.userAnswer)}.</span> ${q.options[q.userAnswer] || 'N/A'}
                   <span style="margin-left: auto; color: #dc2626;">Your answer</span>
                 </div>
+                ` : `
+                <div class="option" style="border-color: #dc2626; background: #fef2f2;">
+                  <span style="color: #dc2626;">Skipped</span>
+                </div>
+                `}
                 <div style="margin-top: 0.75rem; padding: 0.75rem; background: #eff6ff; border-left: 3px solid #3b82f6; font-size: 0.875rem; color: #1e40af;">
                   ${q.explanation}
                 </div>
@@ -673,7 +746,7 @@
         `;
       }
 
-      html += `<div class="card" style="text-align: center;"><button class="btn" onclick="localStorage.removeItem('current_session'); startTest()">Try Again</button></div>`;
+      html += `<div class="card" style="text-align: center;"><button class="btn" onclick="localStorage.removeItem(CONFIG.KEY_SESSION); startTest()">Try Again</button></div>`;
 
       app.innerHTML = html;
       fadeIn('.card');
