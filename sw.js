@@ -1,4 +1,4 @@
-const CACHE_NAME = 'citizenship-test-v2';
+const CACHE_NAME = 'citizenship-test-v3';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -7,6 +7,8 @@ const STATIC_ASSETS = [
   '/manifest.json',
   '/assets/icons/icon-192x192.svg'
 ];
+
+let updateAvailable = false;
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -65,4 +67,17 @@ self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
+  if (event.data && event.data.type === 'CHECK_UPDATE') {
+    if (updateAvailable) {
+      self.clients.matchAll({ type: 'window' }).then((clients) => {
+        clients.forEach((client) => {
+          client.postMessage({ type: 'UPDATE_AVAILABLE' });
+        });
+      });
+    }
+  }
+});
+
+self.addEventListener('controllerchange', () => {
+  updateAvailable = true;
 });
