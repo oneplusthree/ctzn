@@ -606,9 +606,10 @@
         </div>
       `;
       
+      // Focus first option by default for accessibility, not based on selected state
       setTimeout(() => {
-        const selectedOption = document.querySelector('.option.selected');
-        if (selectedOption) selectedOption.focus();
+        const firstOption = document.querySelector('.option');
+        if (firstOption) firstOption.focus();
       }, 100);
     }
 
@@ -618,6 +619,9 @@
       saveState();
       const isLast = state.session.currentIndex >= state.session.questionIds.length - 1;
       const optionId = `#q${state.session.currentIndex}-option-${i}`;
+      
+      // Clear all selected classes before animation to prevent bleed-over
+      document.querySelectorAll('.option.selected').forEach(el => el.classList.remove('selected'));
       
       anime({
         targets: optionId,
