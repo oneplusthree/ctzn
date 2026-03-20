@@ -500,6 +500,11 @@
     function renderTest() {
       const qId = state.session.questionIds[state.session.currentIndex];
       const q = Questions.get(qId);
+      if (!q) {
+        console.error('Question not found:', qId);
+        app.innerHTML = '<div class="card"><p>Error: Question not found</p></div>';
+        return;
+      }
       const answered = Object.keys(state.session.answers).length;
       const progress = (answered / state.session.questionIds.length) * 100;
 
@@ -536,16 +541,25 @@
       state.session.answers[qId] = i;
       saveState();
       
-      anime({ targets: `#option-${i}`, scale: [1, 1.02], duration: 100, easing: 'easeOutQuad', complete: () => {
-        if (state.session.currentIndex < state.session.questionIds.length - 1) {
-          nextQ();
-        } else {
-          submitTest();
+      const isLast = state.session.currentIndex >= state.session.questionIds.length - 1;
+      
+      anime({
+        targets: `#option-${i}`,
+        scale: [1, 1.02],
+        duration: 150,
+        easing: 'easeOutQuad',
+        complete: () => {
+          if (isLast) {
+            submitTest();
+          } else {
+            state.session.currentIndex++;
+            renderTest();
+          }
         }
-      }});
+      });
     }
 
-    function nextQ() { if (state.session.currentIndex < 19) { state.session.currentIndex++; renderTest(); } }
+    function nextQ() { if (state.session.currentIndex < state.session.questionIds.length - 1) { state.session.currentIndex++; renderTest(); } }
     function prevQ() { if (state.session.currentIndex > 0) { state.session.currentIndex--; renderTest(); } }
     function goTo(i) { state.session.currentIndex = i; renderTest(); }
 

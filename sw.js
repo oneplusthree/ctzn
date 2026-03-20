@@ -1,13 +1,11 @@
-const CACHE_NAME = 'citizenship-test-v1';
+const CACHE_NAME = 'citizenship-test-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
-  '/css/styles.css',
-  '/js/app.js',
   '/js/questions.js',
-  '/js/storage.js',
-  '/js/router.js',
-  '/manifest.json'
+  '/js/anime.min.js',
+  '/manifest.json',
+  '/assets/icons/icon-192x192.svg'
 ];
 
 self.addEventListener('install', (event) => {

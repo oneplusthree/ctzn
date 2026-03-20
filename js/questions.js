@@ -3,12 +3,12 @@ const Questions = {
     "q001": {
       text: "What are three responsibilities of Canadian citizenship?",
       options: [
-        "Being loyal to Canada, recycling newspapers, serving in the military",
         "Obeying the law, taking responsibility for oneself and family, serving on a jury when called",
+        "Being loyal to Canada, recycling newspapers, serving in the military",
         "Learning both official languages, voting in elections, belonging to a union",
         "Buying Canadian products, owning a business, using less water"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "The three main responsibilities of citizenship are obeying the law, taking responsibility for oneself and one's family, and serving on a jury when called. These are fundamental duties that all Canadian citizens are expected to fulfill.",
       category: "Rights and Responsibilities",
       source: { page: 9, chapter: "Rights and Responsibilities", lineNumbers: "1-15" }
@@ -55,12 +55,12 @@ const Questions = {
     "q005": {
       text: "What is the minimum age requirement to vote in Canadian federal elections?",
       options: [
-        "16 years old",
         "18 years old",
+        "16 years old",
         "21 years old",
         "25 years old"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "Canadian citizens who are 18 years of age or older are entitled to vote in federal elections. This right is protected under the Canadian Charter of Rights and Freedoms.",
       category: "Federal Elections",
       source: { page: 75, chapter: "Federal Elections", lineNumbers: "5-15" }
@@ -69,11 +69,11 @@ const Questions = {
       text: "Who is the current King or Queen of Canada?",
       options: [
         "Queen Elizabeth II",
-        "King Charles III",
         "King George VI",
+        "King Charles III",
         "Prince William"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "King Charles III is the current monarch of Canada, succeeding Queen Elizabeth II who passed away in September 2022. As Canada's constitutional monarch, he is the head of state, represented in Canada by the Governor General.",
       category: "How Canadians Govern",
       source: { page: 63, chapter: "How Canadians Govern Themselves", lineNumbers: "1-15" }
@@ -133,12 +133,12 @@ const Questions = {
     "q011": {
       text: "Who was Canada's first Prime Minister?",
       options: [
-        "John A. Macdonald",
         "Sir John A. Macdonald",
+        "John A. Macdonald",
         "Alexander Mackenzie",
         "George-Étienne Cartier"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "Sir John A. Macdonald was Canada's first Prime Minister, serving from 1867 to 1873 and again from 1878 to 1891. He played a crucial role in the creation of Canada and the expansion of the railway system.",
       category: "Canada's History",
       source: { page: 52, chapter: "Canada's History", lineNumbers: "15-30" }
@@ -160,11 +160,11 @@ const Questions = {
       text: "What document contains Canada's Charter of Rights and Freedoms?",
       options: [
         "The Canadian Bill of Rights",
-        "The Constitution Act, 1982",
         "The British North America Act",
+        "The Constitution Act, 1982",
         "The Citizenship Act"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "The Canadian Charter of Rights and Freedoms is part of the Constitution Act, 1982. It guarantees fundamental rights, democratic rights, mobility rights, legal rights, and equality rights to all Canadians.",
       category: "Rights and Responsibilities",
       source: { page: 7, chapter: "Rights and Responsibilities", lineNumbers: "1-15" }
@@ -186,11 +186,11 @@ const Questions = {
       text: "What is the role of the Lieutenant Governor in a province?",
       options: [
         "Elected by citizens to run the provincial government",
-        "The federal government's representative in the province",
+        "The head of the provincial legislature",
         "Appointed by the province to advise the Queen",
-        "The head of the provincial legislature"
+        "The federal government's representative in the province"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "Lieutenant Governors are appointed by the federal government to represent the Crown in each province (except Quebec, which has a Lieutenant Governor and a National Assembly). They perform ceremonial duties and must approve provincial legislation.",
       category: "How Canadians Govern",
       source: { page: 69, chapter: "How Canadians Govern Themselves", lineNumbers: "10-25" }
@@ -224,12 +224,12 @@ const Questions = {
     "q018": {
       text: "What is the capital of Canada?",
       options: [
-        "Toronto",
         "Ottawa",
+        "Toronto",
         "Montreal",
         "Kingston"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "Ottawa is the capital of Canada. It is located in Ontario, along the border with Quebec. The name Ottawa comes from the Algonquin word meaning \"to trade.\"",
       category: "Canada's Regions",
       source: { page: 109, chapter: "Canada's Regions", lineNumbers: "1-10" }
@@ -238,11 +238,11 @@ const Questions = {
       text: "What is the role of the Senate in Canada?",
       options: [
         "To represent the provinces in federal law-making",
-        "To provide second sober thought to legislation and represent regional interests",
         "To veto any bill passed by the House of Commons",
+        "To provide second sober thought to legislation and represent regional interests",
         "To appoint Supreme Court judges"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "The Senate provides \"sober second thought\" to legislation passed by the elected House of Commons. Senators represent different regions and groups across Canada and can suggest amendments or delay bills.",
       category: "How Canadians Govern",
       source: { page: 65, chapter: "How Canadians Govern Themselves", lineNumbers: "15-30" }
@@ -251,11 +251,11 @@ const Questions = {
       text: "What is the role of the courts in Canada?",
       options: [
         "To create new laws for Parliament",
-        "To interpret and apply the law, and ensure justice is served",
+        "To investigate crimes and gather evidence",
         "To advise the Prime Minister on legal matters",
-        "To investigate crimes and gather evidence"
+        "To interpret and apply the law, and ensure justice is served"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "The courts interpret and apply the law. They ensure that justice is served fairly and equally to all Canadians. Courts are independent from the government and political interference.",
       category: "Justice System",
       source: { page: 89, chapter: "Justice System", lineNumbers: "1-15" }
@@ -276,12 +276,12 @@ const Questions = {
     "q022": {
       text: "What are the three branches of government in Canada?",
       options: [
-        "Federal, Provincial, and Municipal",
         "Executive, Legislative, and Judicial",
+        "Federal, Provincial, and Municipal",
         "Monarch, Senate, and Commons",
         "Prime Minister, Cabinet, and Parliament"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "Canada's government is divided into three branches: the Executive (the Crown and Cabinet), the Legislative (Parliament), and the Judicial (the courts). This separation of powers ensures checks and balances.",
       category: "How Canadians Govern",
       source: { page: 64, chapter: "How Canadians Govern Themselves", lineNumbers: "1-15" }
@@ -328,12 +328,12 @@ const Questions = {
     "q026": {
       text: "Who were the United Empire Loyalists?",
       options: [
-        "British soldiers who stayed in Canada after the American Revolution",
         "American colonists who remained loyal to Britain and came to Canada",
+        "British soldiers who stayed in Canada after the American Revolution",
         "French settlers from Louisiana who moved to Quebec",
         "Indigenous peoples who allied with the British"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "United Empire Loyalists were American colonists who remained loyal to Britain during the American Revolution (1775-1783). When the United States won independence, about 40,000 Loyalists came to Canada, settling mainly in Nova Scotia, New Brunswick, and Ontario.",
       category: "Canada's History",
       source: { page: 43, chapter: "Canada's History", lineNumbers: "15-30" }
@@ -342,11 +342,11 @@ const Questions = {
       text: "When did women get the right to vote in federal elections?",
       options: [
         "1900",
-        "1918",
         "1940",
+        "1918",
         "1960"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "Women gained the right to vote in federal elections in 1918, the same year as men (with some exceptions). However, women of Asian descent had to wait longer, and Indigenous peoples only gained full voting rights in 1960.",
       category: "Canada's History",
       source: { page: 55, chapter: "Canada's History", lineNumbers: "15-25" }
@@ -355,11 +355,11 @@ const Questions = {
       text: "What happened on D-Day (June 6, 1944)?",
       options: [
         "Canada declared war on Germany",
-        "Allied forces, including Canadians, landed in Normandy, France",
+        "Japan attacked Pearl Harbor",
         "Germany surrendered to Allied forces",
-        "Japan attacked Pearl Harbor"
+        "Allied forces, including Canadians, landed in Normandy, France"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "D-Day was the Allied invasion of Normandy, France, on June 6, 1944. Canadian forces played a major role in this operation, landing on Juno Beach. It was one of the most significant battles of World War II.",
       category: "Canada's History",
       source: { page: 56, chapter: "Canada's History", lineNumbers: "1-15" }
@@ -419,12 +419,12 @@ const Questions = {
     "q033": {
       text: "What is the capital of Quebec?",
       options: [
-        "Montreal",
         "Quebec City",
+        "Montreal",
         "Ottawa",
         "Sherbrooke"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "Quebec City is the capital of Quebec. It is one of the oldest cities in North America, founded in 1608 by Samuel de Champlain. Its famous Old Town (Vieux-Québec) is surrounded by historic stone walls.",
       category: "Canada's Regions",
       source: { page: 113, chapter: "Canada's Regions", lineNumbers: "1-10" }
@@ -433,11 +433,11 @@ const Questions = {
       text: "What is the capital of British Columbia?",
       options: [
         "Vancouver",
-        "Victoria",
+        "Surrey",
         "Kelowna",
-        "Surrey"
+        "Victoria"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "Victoria is the capital of British Columbia. Located on Vancouver Island, it is known for its British colonial architecture and mild climate.",
       category: "Canada's Regions",
       source: { page: 121, chapter: "Canada's Regions", lineNumbers: "1-10" }
@@ -446,11 +446,11 @@ const Questions = {
       text: "What are the Prairie Provinces?",
       options: [
         "Ontario, Manitoba, Saskatchewan",
-        "Alberta, Saskatchewan, Manitoba",
         "British Columbia, Alberta, Saskatchewan",
+        "Alberta, Saskatchewan, Manitoba",
         "Manitoba, Ontario, Alberta"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "The Prairie Provinces are Alberta, Saskatchewan, and Manitoba. They are characterized by vast agricultural lands, rolling prairies, and significant natural resources.",
       category: "Canada's Regions",
       source: { page: 118, chapter: "Canada's Regions", lineNumbers: "1-10" }
@@ -523,12 +523,12 @@ const Questions = {
     "q041": {
       text: "What are the founding peoples of Canada?",
       options: [
-        "English and French",
         "Aboriginal peoples, French, and British",
+        "English and French",
         "British, American, and French",
         "Indigenous, British, and American"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "Canada's founding peoples are the Aboriginal peoples (First Nations, Inuit, and Métis), the French, and the British. These groups built Canada's foundations through cooperation and accommodation.",
       category: "Who We Are",
       source: { page: 27, chapter: "Who We Are", lineNumbers: "1-10" }
@@ -537,11 +537,11 @@ const Questions = {
       text: "What is the flag of Quebec called?",
       options: [
         "Union Jack",
-        "Fleurdelisé",
+        "Trident",
         "Maple Leaf",
-        "Trident"
+        "Fleurdelisé"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "The flag of Quebec is called the Fleurdelisé (literally \"lily flag\"). It features a blue field with a white cross and four fleur-de-lis, representing the French heritage of Quebec.",
       category: "Canadian Symbols",
       source: { page: 97, chapter: "Canadian Symbols", lineNumbers: "1-10" }
@@ -563,11 +563,11 @@ const Questions = {
       text: "What is Canada's national animal?",
       options: [
         "Moose",
-        "Beaver",
         "Bear",
+        "Beaver",
         "Caribou"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "The beaver is Canada's national animal. It was chosen because of the important role beavers played in the early Canadian economy through the fur trade. The beaver was officially designated as a symbol of Canada in 1975.",
       category: "Canadian Symbols",
       source: { page: 100, chapter: "Canadian Symbols", lineNumbers: "15-25" }
@@ -614,12 +614,12 @@ const Questions = {
     "q048": {
       text: "What is Canada Day?",
       options: [
-        "January 1",
         "July 1",
+        "January 1",
         "September 1",
         "November 1"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "Canada Day is celebrated on July 1. It marks the anniversary of Confederation (July 1, 1867) and is the national holiday of Canada.",
       category: "Canadian Symbols",
       source: { page: 106, chapter: "Canadian Symbols", lineNumbers: "1-10" }
@@ -628,11 +628,11 @@ const Questions = {
       text: "What are the three main industries in Canada?",
       options: [
         "Agriculture, Fishing, and Mining",
-        "Primary (extraction), Secondary (manufacturing), and Tertiary (services)",
+        "Tourism, Education, and Healthcare",
         "Manufacturing, Technology, and Finance",
-        "Tourism, Education, and Healthcare"
+        "Primary (extraction), Secondary (manufacturing), and Tertiary (services)"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "Canada's economy is based on three main types of industries: primary (extraction of natural resources like agriculture, mining, forestry, and fishing), secondary (manufacturing and construction), and tertiary (services like retail, finance, and healthcare).",
       category: "Canada's Economy",
       source: { page: 127, chapter: "Canada's Economy", lineNumbers: "1-15" }
@@ -667,11 +667,11 @@ const Questions = {
       text: "Are Canadians allowed to question the police about their service or conduct?",
       options: [
         "No, police can never be questioned",
-        "Yes, citizens can make complaints through proper channels",
         "Only in court",
+        "Yes, citizens can make complaints through proper channels",
         "Only if the person is a lawyer"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "Canadians have the right to question or complain about police service or conduct. There are established procedures and oversight bodies to handle such complaints fairly.",
       category: "Justice System",
       source: { page: 92, chapter: "Justice System", lineNumbers: "10-20" }
@@ -692,12 +692,12 @@ const Questions = {
     "q054": {
       text: "What is the secret ballot?",
       options: [
-        "A ballot that can be kept secret by the voter",
         "A voting method where your choices cannot be seen by others",
+        "A ballot that can be kept secret by the voter",
         "A ballot for the Senate",
         "An electronic voting system"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "The secret ballot ensures that voters can mark their ballots privately, without anyone seeing how they vote. This protects voters from intimidation and ensures free choice.",
       category: "Federal Elections",
       source: { page: 78, chapter: "Federal Elections", lineNumbers: "1-10" }
@@ -706,11 +706,11 @@ const Questions = {
       text: "Are Canadians obliged to tell others how they voted?",
       options: [
         "Yes, it is required by law",
-        "No, voting is a private matter",
+        "Only for tax purposes",
         "Only if asked by election officials",
-        "Only for tax purposes"
+        "No, voting is a private matter"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "Canadians are not obliged to tell anyone how they voted. Voting is a private matter, and the secret ballot protects this right.",
       category: "Federal Elections",
       source: { page: 78, chapter: "Federal Elections", lineNumbers: "5-15" }
@@ -732,11 +732,11 @@ const Questions = {
       text: "Who is your Member of Parliament (MP)?",
       options: [
         "The Prime Minister",
-        "The person elected to represent your riding in Parliament",
         "The leader of the party you voted for",
+        "The person elected to represent your riding in Parliament",
         "The Premier of your province"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "Your MP is the person elected to represent your constituency (riding) in the House of Commons. MPs are elected to serve the interests of their constituents and participate in making federal laws.",
       category: "Federal Elections",
       source: { page: 80, chapter: "Federal Elections", lineNumbers: "1-10" }
@@ -745,11 +745,11 @@ const Questions = {
       text: "Who is entitled to vote in Canadian federal elections?",
       options: [
         "All people living in Canada",
-        "Canadian citizens aged 18 and older who are on the voters list",
+        "Only Canadian-born citizens",
         "Only property owners",
-        "Only Canadian-born citizens"
+        "Canadian citizens aged 18 and older who are on the voters list"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "Canadian citizens who are at least 18 years old are entitled to vote in federal elections. They must be on the voters list, which is updated during election periods.",
       category: "Federal Elections",
       source: { page: 75, chapter: "Federal Elections", lineNumbers: "1-10" }
@@ -796,12 +796,12 @@ const Questions = {
     "q062": {
       text: "What is meant by unity in diversity?",
       options: [
-        "Everyone should be the same",
         "People from different backgrounds living together in harmony",
+        "Everyone should be the same",
         "One official culture for all Canadians",
         "Only certain cultures can practice their traditions"
       ],
-      correctAnswer: 1,
+      correctAnswer: 0,
       explanation: "Unity in diversity means that Canadians from different backgrounds, cultures, and beliefs live together in harmony while maintaining their unique identities. This is a core Canadian value.",
       category: "Who We Are",
       source: { page: 28, chapter: "Who We Are", lineNumbers: "1-10" }
@@ -836,11 +836,11 @@ const Questions = {
       text: "What does it mean to say that Canada is a constitutional monarchy?",
       options: [
         "The Queen/King has absolute power",
-        "The monarch's powers are limited by the Constitution",
         "Canada has no monarch",
+        "The monarch's powers are limited by the Constitution",
         "The Constitution is more important than the monarch"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "Canada is a constitutional monarchy, meaning the monarch's powers are limited by the Constitution. The Queen/King reigns but does not rule, and all actions are bound by constitutional principles.",
       category: "How Canadians Govern",
       source: { page: 63, chapter: "How Canadians Govern Themselves", lineNumbers: "1-10" }
@@ -849,11 +849,11 @@ const Questions = {
       text: "Who helped found La Francophonie in 1970?",
       options: [
         "United States",
-        "Canada",
+        "Belgium",
         "France",
-        "Belgium"
+        "Canada"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "In 1970, Canada helped found La Francophonie, an international association of French-speaking countries. This organization promotes French language and culture worldwide.",
       category: "Modern Canada",
       source: { page: 61, chapter: "Modern Canada", lineNumbers: "1-10" }
@@ -901,11 +901,11 @@ const Questions = {
       text: "What did the Canadian Pacific Railway symbolize?",
       options: [
         "Canada's connection to the United States",
-        "The linking of Canada from coast to coast",
+        "Canada's agricultural heritage",
         "Canada's independence from Britain",
-        "Canada's agricultural heritage"
+        "The linking of Canada from coast to coast"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "The Canadian Pacific Railway (completed in 1885) symbolized the linking of Canada from coast to coast. It connected the east and west and helped build a unified nation.",
       category: "Canada's History",
       source: { page: 52, chapter: "Canada's History", lineNumbers: "1-15" }
@@ -927,11 +927,11 @@ const Questions = {
       text: "What were the Rebellions of 1837-38?",
       options: [
         "Attacks by the United States on Canada",
-        "Uprisings in Upper and Lower Canada against British rule",
         "Conflicts between French and English Canadians",
+        "Uprisings in Upper and Lower Canada against British rule",
         "Indigenous protests against settlement"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "The Rebellions of 1837-38 were uprisings in both Upper Canada (Ontario) and Lower Canada (Quebec) against British colonial rule. They led to important political reforms.",
       category: "Canada's History",
       source: { page: 45, chapter: "Canada's History", lineNumbers: "1-15" }
@@ -966,11 +966,11 @@ const Questions = {
       text: "Name four rights that Canadians enjoy:",
       options: [
         "Right to bear arms, right to privacy, right to work, right to strike",
-        "Equality rights, mobility rights, legal rights, language rights",
+        "Freedom of speech, freedom of press, freedom of religion, freedom of assembly",
         "Right to health care, right to education, right to housing, right to food",
-        "Freedom of speech, freedom of press, freedom of religion, freedom of assembly"
+        "Equality rights, mobility rights, legal rights, language rights"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "Canadians enjoy many rights including: equality rights, mobility rights, legal rights (right to life, liberty and security), language rights, and democratic rights.",
       category: "Rights and Responsibilities",
       source: { page: 7, chapter: "Rights and Responsibilities", lineNumbers: "5-15" }
@@ -1031,11 +1031,11 @@ const Questions = {
       text: "What is patriation of the Constitution?",
       options: [
         "Moving the capital to Ottawa",
-        "Bringing Canada's Constitution home from Britain",
         "Making Quebec a separate country",
+        "Bringing Canada's Constitution home from Britain",
         "Creating new provinces"
       ],
-      correctAnswer: 1,
+      correctAnswer: 2,
       explanation: "Patriation means bringing Canada's Constitution home from Britain. Before 1982, Canada's Constitution was held by Britain and needed British Parliament approval to be changed. The Constitution Act, 1982 brought it home.",
       category: "Canada's History",
       source: { page: 59, chapter: "Canada's History", lineNumbers: "1-10" }
@@ -1057,11 +1057,11 @@ const Questions = {
       text: "What is Bombardier famous for?",
       options: [
         "Making cars",
-        "Making aircraft and rail equipment",
+        "Manufacturing computers",
         "Building ships",
-        "Manufacturing computers"
+        "Making aircraft and rail equipment"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "Bombardier is a Canadian multinational company famous for making aircraft (business jets, commercial jets) and rail transportation equipment (trains, trams).",
       category: "Modern Canada",
       source: { page: 60, chapter: "Modern Canada", lineNumbers: "10-20" }
@@ -1161,11 +1161,11 @@ const Questions = {
       text: "What body of water lies between Canada and the United States on the southern border?",
       options: [
         "Atlantic Ocean",
-        "Great Lakes",
+        "Arctic Ocean",
         "Pacific Ocean",
-        "Arctic Ocean"
+        "Great Lakes"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "The Great Lakes (Superior, Michigan, Huron, Erie, and Ontario) form part of the border between Canada and the United States. They are the largest group of fresh water lakes on Earth.",
       category: "Canada's Regions",
       source: { page: 114, chapter: "Canada's Regions", lineNumbers: "1-10" }
@@ -1213,11 +1213,11 @@ const Questions = {
       text: "What is the capital of Alberta?",
       options: [
         "Calgary",
-        "Edmonton",
+        "Lethbridge",
         "Red Deer",
-        "Lethbridge"
+        "Edmonton"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "Edmonton is the capital of Alberta. It is located on the North Saskatchewan River and is known for its oil industry and cultural attractions.",
       category: "Canada's Regions",
       source: { page: 119, chapter: "Canada's Regions", lineNumbers: "1-10" }
@@ -1239,11 +1239,11 @@ const Questions = {
       text: "What is the Canadian Shield?",
       options: [
         "A protected wildlife area",
-        "A large area of ancient rock covering much of Canada",
+        "A military zone",
         "A national park",
-        "A military zone"
+        "A large area of ancient rock covering much of Canada"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "The Canadian Shield is a large area of ancient rock that covers about half of Canada. It contains valuable minerals and has been shaped by millions of years of glacial activity.",
       category: "Canada's Regions",
       source: { page: 115, chapter: "Canada's Regions", lineNumbers: "1-10" }
@@ -1265,11 +1265,11 @@ const Questions = {
       text: "Who are the Canadian Rangers?",
       options: [
         "Professional soldiers",
-        "Reservists who patrol Canada's remote coastal and northern regions",
+        "Border security personnel",
         "Police officers",
-        "Border security personnel"
+        "Reservists who patrol Canada's remote coastal and northern regions"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "The Canadian Rangers are part-time reservists of the Canadian Armed Forces who provide a military presence in remote and isolated communities across Canada, particularly in the North and coastal regions.",
       category: "Canada's Regions",
       source: { page: 124, chapter: "Canada's Regions", lineNumbers: "1-10" }
@@ -1291,11 +1291,11 @@ const Questions = {
       text: "Who administers the Canadian citizenship test?",
       options: [
         "The Supreme Court of Canada",
-        "Immigration, Refugees and Citizenship Canada (IRCC)",
+        "Provincial governments",
         "The Canada Revenue Agency",
-        "Provincial governments"
+        "Immigration, Refugees and Citizenship Canada (IRCC)"
       ],
-      correctAnswer: 1,
+      correctAnswer: 3,
       explanation: "Immigration, Refugees and Citizenship Canada (IRCC) administers the citizenship test and citizenship process. The test evaluates knowledge of Canada and the rights and responsibilities of citizenship.",
       category: "Rights and Responsibilities",
       source: { page: 1, chapter: "Rights and Responsibilities", lineNumbers: "1-10" }
