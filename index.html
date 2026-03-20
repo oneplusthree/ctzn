@@ -572,6 +572,8 @@
       }
       const answered = Object.keys(state.session.answers).length;
       const progress = (answered / state.session.questionIds.length) * 100;
+      
+      console.log('renderTest index:', state.session.currentIndex, 'qId:', qId, 'savedAnswer:', state.session.answers[qId]);
 
       app.innerHTML = `
         <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
@@ -620,8 +622,22 @@
       const isLast = state.session.currentIndex >= state.session.questionIds.length - 1;
       const optionId = `#q${state.session.currentIndex}-option-${i}`;
       
-      // Clear all selected classes before animation to prevent bleed-over
-      document.querySelectorAll('.option.selected').forEach(el => el.classList.remove('selected'));
+      console.log('selectOption:', i, 'qId:', qId, 'isLast:', isLast);
+      
+      // Clear all selected classes before animation
+      const selectedEls = document.querySelectorAll('.option.selected');
+      console.log('Clearing', selectedEls.length, 'selected elements');
+      selectedEls.forEach(el => {
+        el.classList.remove('selected');
+        el.removeAttribute('aria-checked');
+      });
+      
+      // Add selected to current
+      const currentEl = document.querySelector(optionId);
+      if (currentEl) {
+        currentEl.classList.add('selected');
+        currentEl.setAttribute('aria-checked', 'true');
+      }
       
       anime({
         targets: optionId,
