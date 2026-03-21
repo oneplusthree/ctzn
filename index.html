@@ -600,16 +600,12 @@
           </div>
           <div class="question-text">${q.text}</div>
           <div class="options" role="radiogroup" aria-label="Answer options">
-            ${q.options.map((opt, i) => {
-              const isSelected = state.session.answers[qId] === i;
-              const selectedStyle = isSelected ? 'border-color: #dc2626; background: #fef2f2;' : '';
-              return `
+            ${q.options.map((opt, i) => `
               <div id="q${state.session.currentIndex}-option-${i}" class="option" 
-                   style="${selectedStyle}"
                    onclick="selectOption(${i})" 
                    onkeydown="handleOptionKeydown(event, ${i})"
                    role="radio" 
-                   aria-checked="${isSelected}" 
+                   aria-checked="${false}" 
                    tabindex="${i === 0 ? 0 : -1}"
                    aria-label="Option ${String.fromCharCode(65 + i)}: ${opt}">
                 <span class="option-letter">${String.fromCharCode(65 + i)}.</span> ${opt}
@@ -623,33 +619,24 @@
         </div>
       `;
       
+      // Apply selected styles based on state
+      const selectedIdx = state.session.answers[qId];
+      if (selectedIdx !== undefined) {
+        const selectedEl = document.querySelector(`#q${state.session.currentIndex}-option-${selectedIdx}`);
+        if (selectedEl) {
+          selectedEl.style.borderColor = '#dc2626';
+          selectedEl.style.background = '#fef2f2';
+          selectedEl.setAttribute('aria-checked', 'true');
+        }
+      }
+      
       setTimeout(() => {
         const firstOption = document.querySelector('.option');
         if (firstOption) firstOption.focus();
       }, 100);
     }
 
-    function selectOption(i) {
-      const qId = state.session.questionIds[state.session.currentIndex];
-      state.session.answers[qId] = i;
-      saveState();
-      const isLast = state.session.currentIndex >= state.session.questionIds.length - 1;
-      const optionId = `#q${state.session.currentIndex}-option-${i}`;
-      const currentEl = document.querySelector(optionId);
-      
-      // Clear all selected styles immediately using inline styles
-      document.querySelectorAll('.option[style*="border-color: #dc2626"]').forEach(el => {
-        el.style.borderColor = '#e5e7eb';
-        el.style.background = 'white';
-        el.setAttribute('aria-checked', 'false');
-      });
-      
-      // Apply selected style to current
-      if (currentEl) {
-        currentEl.style.borderColor = '#dc2626';
-        currentEl.style.background = '#fef2f2';
-        currentEl.setAttribute('aria-checked', 'true');
-      }
+
       
       anime({
         targets: optionId,
@@ -665,31 +652,9 @@
           }
         }
       });
+      }
     }
-
-    function selectOption(i) {
-      const qId = state.session.questionIds[state.session.currentIndex];
-      state.session.answers[qId] = i;
-      saveState();
-      
-      const isLast = state.session.currentIndex >= state.session.questionIds.length - 1;
-      
-      anime({
-        targets: `#option-${i}`,
-        scale: [1, 1.02],
-        duration: 150,
-        easing: 'easeOutQuad',
-        complete: () => {
-          if (isLast) {
-            submitTest();
-          } else {
-            state.session.currentIndex++;
-            renderTest();
-          }
-        }
-      });
-    }
-
+ 
     function nextQ() { if (state.session.currentIndex < state.session.questionIds.length - 1) { state.session.currentIndex++; renderTest(); } }
     function prevQ() { if (state.session.currentIndex > 0) { state.session.currentIndex--; renderTest(); } }
     function goTo(i) { state.session.currentIndex = i; renderTest(); }
