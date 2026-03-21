@@ -25,7 +25,6 @@
     .options { display: flex; flex-direction: column; gap: 0.5rem; }
     .option { padding: 1rem; border: 2px solid #e5e7eb; border-radius: 8px; cursor: pointer; transition: border-color 0.2s, background 0.2s; }
     .option:hover { border-color: #dc2626; background: #fef2f2; }
-    .option.selected { border-color: #dc2626; background: #fef2f2; }
     .option-letter { font-weight: 600; margin-right: 0.5rem; }
     .timer { background: rgba(255,255,255,0.2); padding: 0.5rem 1rem; border-radius: 6px; font-weight: 600; }
     .timer.warning { background: #f59e0b; }
@@ -258,7 +257,21 @@
         try {
           state.session = JSON.parse(saved);
           if (state.session?.status === 'in-progress') {
+            // Check if time has expired while page was closed
+            const elapsedMs = Date.now() - state.session.startTime;
+            const elapsedSec = Math.floor(elapsedMs / 1000);
+            
+            if (elapsedSec >= CONFIG.TIME_LIMIT) {
+              // Time expired - auto fail the test
+              state.timeRemaining = 0;
+              submitTest();
+              return;
+            }
+            
+            // Resume with remaining time
+            state.timeRemaining = CONFIG.TIME_LIMIT - elapsedSec;
             renderTest();
+            startTimer();
             return;
           }
         } catch (e) {
@@ -573,8 +586,6 @@
       const answered = Object.keys(state.session.answers).length;
       const progress = (answered / state.session.questionIds.length) * 100;
       
-      console.log('renderTest index:', state.session.currentIndex, 'qId:', qId, 'savedAnswer:', state.session.answers[qId]);
-
       app.innerHTML = `
         <div class="progress-bar"><div class="progress-fill" style="width: ${progress}%"></div></div>
         <div class="dots">
@@ -589,17 +600,21 @@
           </div>
           <div class="question-text">${q.text}</div>
           <div class="options" role="radiogroup" aria-label="Answer options">
-            ${q.options.map((opt, i) => `
-              <div id="q${state.session.currentIndex}-option-${i}" class="option ${state.session.answers[qId] === i ? 'selected' : ''}" 
+            ${q.options.map((opt, i) => {
+              const isSelected = state.session.answers[qId] === i;
+              const selectedStyle = isSelected ? 'border-color: #dc2626; background: #fef2f2;' : '';
+              return `
+              <div id="q${state.session.currentIndex}-option-${i}" class="option" 
+                   style="${selectedStyle}"
                    onclick="selectOption(${i})" 
                    onkeydown="handleOptionKeydown(event, ${i})"
                    role="radio" 
-                   aria-checked="${state.session.answers[qId] === i}" 
+                   aria-checked="${isSelected}" 
                    tabindex="${i === 0 ? 0 : -1}"
                    aria-label="Option ${String.fromCharCode(65 + i)}: ${opt}">
                 <span class="option-letter">${String.fromCharCode(65 + i)}.</span> ${opt}
-              </div>
-            `).join('')}
+              </div>`;
+            }).join('')}
           </div>
         </div>
         <div class="nav">
@@ -608,7 +623,6 @@
         </div>
       `;
       
-      // Focus first option by default for accessibility, not based on selected state
       setTimeout(() => {
         const firstOption = document.querySelector('.option');
         if (firstOption) firstOption.focus();
@@ -621,21 +635,19 @@
       saveState();
       const isLast = state.session.currentIndex >= state.session.questionIds.length - 1;
       const optionId = `#q${state.session.currentIndex}-option-${i}`;
+      const currentEl = document.querySelector(optionId);
       
-      console.log('selectOption:', i, 'qId:', qId, 'isLast:', isLast);
-      
-      // Clear all selected classes before animation
-      const selectedEls = document.querySelectorAll('.option.selected');
-      console.log('Clearing', selectedEls.length, 'selected elements');
-      selectedEls.forEach(el => {
-        el.classList.remove('selected');
-        el.removeAttribute('aria-checked');
+      // Clear all selected styles immediately using inline styles
+      document.querySelectorAll('.option[style*="border-color: #dc2626"]').forEach(el => {
+        el.style.borderColor = '#e5e7eb';
+        el.style.background = 'white';
+        el.setAttribute('aria-checked', 'false');
       });
       
-      // Add selected to current
-      const currentEl = document.querySelector(optionId);
+      // Apply selected style to current
       if (currentEl) {
-        currentEl.classList.add('selected');
+        currentEl.style.borderColor = '#dc2626';
+        currentEl.style.background = '#fef2f2';
         currentEl.setAttribute('aria-checked', 'true');
       }
       
@@ -826,9 +838,9 @@
     }
 
     function startTest() {
-      const testIds = selectQuestions(20);
+      const testIds = selectQuestions(CONFIG.QUESTIONS_PER_TEST);
       state.session = { id: Date.now().toString(), questionIds: testIds, answers: {}, currentIndex: 0, status: 'in-progress', startTime: Date.now() };
-      state.timeRemaining = 45 * 60;
+      state.timeRemaining = CONFIG.TIME_LIMIT;
       saveState();
       renderTest();
       startTimer();
