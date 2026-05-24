@@ -1,4 +1,4 @@
-const CACHE_NAME = 'citizenship-test-v4';
+const CACHE_NAME = 'citizenship-test-v5';
 const STATIC_ASSETS = [
   './',
   'index.html',
