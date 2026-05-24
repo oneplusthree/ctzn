@@ -2,7 +2,7 @@
   "name": "Canadian Citizenship Practice Test",
   "short_name": "Citizenship Test",
   "description": "Practice test for Canadian citizenship exam based on Discover Canada study guide",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#dc2626",
@@ -27,7 +27,7 @@
       "name": "Start New Test",
       "short_name": "New Test",
       "description": "Start a new citizenship test",
-      "url": "/?action=test",
+      "url": "./?action=test",
       "icons": [{ "src": "assets/icons/icon-192x192.svg", "sizes": "192x192" }]
     }
   ]

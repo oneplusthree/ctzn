@@ -1,11 +1,11 @@
-const CACHE_NAME = 'citizenship-test-v3';
+const CACHE_NAME = 'citizenship-test-v4';
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/js/questions.js',
-  '/js/anime.min.js',
-  '/manifest.json',
-  '/assets/icons/icon-192x192.svg'
+  './',
+  'index.html',
+  'js/questions.js',
+  'js/anime.min.js',
+  'manifest.json',
+  'assets/icons/icon-192x192.svg'
 ];
 
 let updateAvailable = false;
