@@ -638,6 +638,44 @@
       }, 100);
     }
 
+    function selectOption(i) {
+      const qId = state.session.questionIds[state.session.currentIndex];
+      state.session.answers[qId] = i;
+      saveState();
+      const isLast = state.session.currentIndex >= state.session.questionIds.length - 1;
+      const optionId = `#q${state.session.currentIndex}-option-${i}`;
+      const currentEl = document.querySelector(optionId);
+
+      // Clear all selected styles
+      document.querySelectorAll('.option').forEach(el => {
+        el.style.borderColor = '#e5e7eb';
+        el.style.background = 'white';
+        el.setAttribute('aria-checked', 'false');
+      });
+
+      // Apply selected style to chosen option
+      if (currentEl) {
+        currentEl.style.borderColor = '#dc2626';
+        currentEl.style.background = '#fef2f2';
+        currentEl.setAttribute('aria-checked', 'true');
+      }
+
+      anime({
+        targets: optionId,
+        scale: [1, 1.02],
+        duration: 150,
+        easing: 'easeOutQuad',
+        complete: () => {
+          if (isLast) {
+            submitTest();
+          } else {
+            state.session.currentIndex++;
+            renderTest();
+          }
+        }
+      });
+    }
+
     function nextQ() { if (state.session.currentIndex < state.session.questionIds.length - 1) { state.session.currentIndex++; renderTest(); } }
     function prevQ() { if (state.session.currentIndex > 0) { state.session.currentIndex--; renderTest(); } }
     function goTo(i) { state.session.currentIndex = i; renderTest(); }
